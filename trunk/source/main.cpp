@@ -4,6 +4,8 @@
 #include <PA9.h>       // Include for PA_Lib
 #include <NEMain.h>
 #include <mikmod9.h>
+#include "gfx/all_gfx.c"
+
 #include "nitrocat.h"
 #include "texture.h"
 #include "cubo.h"
@@ -18,15 +20,15 @@ NE_Material * MaterialCubo;
 NE_Model  * Cubo;
 
 
-float* RotoTranslate(int rotX, int rotY, int rotZ, float distance)
+void RotoTranslate(float* translation, int rotX, int rotY, int rotZ, float distance)
 {
-	float deltas[3];
+	
 
-	deltas[0] = distance * ( -(PA_Cos(rotX)^2 * PA_Sin(rotX) / (256 * 256 * 256)) + (PA_Sin(rotZ)^2 * PA_Cos(rotZ) / (256 * 256 * 256) ) );
-	deltas[1] = distance * ( -(PA_Cos(rotY)^2 * PA_Sin(rotY) / (256 * 256 * 256)) + (PA_Sin(rotX)^2 * PA_Cos(rotX) / (256 * 256 * 256) ) );
-	deltas[2] = distance * ( -(PA_Cos(rotZ)^2 * PA_Sin(rotZ) / (256 * 256 * 256)) + (PA_Sin(rotY)^2 * PA_Cos(rotY) / (256 * 256 * 256) ) );
+	translation[0] = distance * ( -(PA_Cos(rotX)^2 * PA_Sin(rotX) / (256 * 256 * 256)) + (PA_Sin(rotZ)^2 * PA_Cos(rotZ) / (256 * 256 * 256) ) );
+	translation[1] = distance * ( -(PA_Cos(rotY)^2 * PA_Sin(rotY) / (256 * 256 * 256)) + (PA_Sin(rotX)^2 * PA_Cos(rotX) / (256 * 256 * 256) ) );
+	translation[2] = distance * ( -(PA_Cos(rotZ)^2 * PA_Sin(rotZ) / (256 * 256 * 256)) + (PA_Sin(rotY)^2 * PA_Cos(rotY) / (256 * 256 * 256) ) );
 
-	return deltas;
+	return;
 }
 void Draw3DScene(void)
 {
@@ -63,8 +65,9 @@ int main()
 	irqSet(IRQ_HBLANK, NE_HBLFunc);
 	NE_Init3D();
 
+	/*
 	//LIBMIKMOD
-MikMod_RegisterDriver(&drv_nds_hw);
+	MikMod_RegisterDriver(&drv_nds_hw);
 	//MikMod_RegisterDriver(&drv_nds_sw);
 	
 	// if we don't know what kind of module we're going to load we can register
@@ -97,15 +100,15 @@ MikMod_RegisterDriver(&drv_nds_hw);
 	TIMER0_DATA = TIMER_FREQ_256(md_bpm * 50 / 125);
 	TIMER0_CR = TIMER_DIV_256 | TIMER_IRQ_REQ | TIMER_ENABLE;
 
-	PA_OutputText(0, 1, 6, "Starting module");
+	//PA_OutputText(0, 1, 6, "Starting module");
 	//Player_Start(module);
 
 
 
 	//END LIBMIKMOD
-
+*/
 	PA_InitText(1, 2);
-	PA_OutputSimpleText(1, 1, 2, "Hello World!");
+	//PA_OutputSimpleText(1, 1, 2, "Hello World!");
 
 
 	Model = NE_ModelCreate(NE_Static);  //Create space for the things we will use.
@@ -134,43 +137,93 @@ MikMod_RegisterDriver(&drv_nds_hw);
 	NE_LightSet(0,NE_White,0,-1,0);
 
 
+	//SPRITES
+/*
+	PA_LoadSpritePal(0, // Screen
+			0, // Palette number
+			(void*)sprt_Pal);	// Palette name
+					
+		PA_CreateSprite(0, // Screen
+			0, // Sprite number
+			(void*)sprt_Sprite, // Sprite name
+			OBJ_SIZE_8X8, // Sprite size
+			1, // 256 color mode
+			0, // Sprite palette number
+			128, 96); // X and Y position on the screen
 
+
+*/
 	// Infinite loop to keep the program running
+	float translations[] = {0,0,0};
 	while (1)
 	{
 		scanKeys();  //Get keys information
 		int keys = keysHeld();
-		int translation[] = {0,0,0};
 		
-		/*
+		
+		
 		if(keys & KEY_UP)
 		{
+			//PA_OutputText(1, 2, 3, "UP!");
 			NE_ModelRotate(Model, 0, 0, 2);
-			translation = RotoTranslate(0,0,2,8);
+			RotoTranslate(translations, 0, 0, 2, 8);
 			NE_CameraRotate (Camera, 0, 0, 2);
 		}
 		if(keys & KEY_DOWN)
 		{
+			//PA_OutputText(1, 2, 3, "Down!");
 			NE_ModelRotate(Model, 0, 0, -2);
 			NE_CameraRotate (Camera, 0, 0, -2);
+			RotoTranslate(translations, 0, 0, -2, 8);
 		}
-		if(keys & KEY_RIGHT){
+		if(keys & KEY_RIGHT)
+		{	
+			//PA_OutputText(1, 2, 3, "Right!");
 			NE_ModelRotate(Model, 0, 2, 0);
 			NE_CameraRotate (Camera, 0, 2, 0);
+			RotoTranslate(translations, 0, 2, 0, 8);
 		}
 		if(keys & KEY_LEFT) 
 		{
+			//PA_OutputText(1, 2, 3, "left!!");
 			NE_ModelRotate(Model, 0, -2, 0);
 			NE_CameraRotate (Camera, 0, -2, 0);
+			RotoTranslate(translations, 0, -2, 0, 8);
 		}
-		NE_CameraMoveFree(Camera, translation[0], translation[1], translation[2]);
+		//NE_CameraMoveFree(Camera, (int)translations[0], (int)translations[1], (int)translations[2]);
 
+		PA_OutputText(1, 2, 3, "Position is x: %d, y:%d, Z:%d", (int)translations[0], (int)translations[1], (int)translations[2]);
+
+
+
+		/**********
+		 * Moving the artificial horizon Sprite
+		 **********/
+		
+		/*PA_MoveSprite(0);
+		if (!PA_SpriteTouched(0))
+		{
+			if(abs(PA_GetSpriteX(0,0) - 128)<3 && abs(PA_GetSpriteY(0,0) - 96)<3)
+			{
+				PA_SetSpriteX(0, 0, 128);
+				PA_SetSpriteY(0, 0, 92);
+			}
+			else
+			{
+				int new_x = (int)(PA_GetSpriteX(0,0) * 0.95);
+				int new_y = (int)(PA_GetSpriteY(0,0) * 0.95);
+				PA_SetSpriteX(0, 0, new_x);
+				PA_SetSpriteY(0, 0, new_y);
+				
+			}
+
+
+		}
 */
-
-
-		//PA_WaitForVBL();
+		//
 		NE_Process(Draw3DScene); //Draws scene
 		NE_WaitForVBL(NE_UPDATE_ANIMATIONS); //Wait for next frame
+		//PA_WaitForVBL();
 	}
 	
 	return 0;
