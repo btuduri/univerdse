@@ -12,4 +12,5 @@ public:
 	float vY;
 	float vZ;
 	void init(void);
+	void move(void);
 };

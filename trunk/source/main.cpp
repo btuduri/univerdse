@@ -22,6 +22,7 @@ NE_Model * Model;
 NE_Material * Material; 
 NE_Material * MaterialCubo; 
 NE_Model  * Cubo;
+NE_Model  * Moth_mod[10];
 
 Moth moths[10];
 
@@ -38,10 +39,14 @@ void RotoTranslate(float* translation, int rotX, int rotY, int rotZ, float dista
 }
 void Draw3DScene(void)
 {
-NE_CameraUse(Camera);   //Set camera
-NE_ModelDraw(Model); //Draw model...
-NE_PolyFormat(31,0,NE_LIGHT_ALL,NE_CULL_NONE,NE_MODULATION );
-NE_ModelDraw(Cubo); //Draw model...
+	NE_CameraUse(Camera);   //Set camera
+	NE_ModelDraw(Model); //Draw model...
+	NE_PolyFormat(31,0,NE_LIGHT_ALL,NE_CULL_NONE,NE_MODULATION );
+	NE_ModelDraw(Cubo); //Draw model...
+	for(int i=0;i<10;i++)
+	{
+		NE_ModelDraw(Moth_mod[i]); //Draw model...
+	}
 
 }
 void MikMod9_SendCommand(u32 command)
@@ -97,7 +102,7 @@ int main()
 	NE_MaterialTexLoad(MaterialCubo, GL_RGB, 128, 128, TEXGEN_TEXCOORD, (u8*) texcubo);
 	NE_ModelSetMaterial(Cubo, MaterialCubo);
 	NE_ModelScale(Model, .2, .2, .2);
-	NE_ModelScale(Cubo, 5.5, 5.5, 5.5);
+	NE_ModelScale(Cubo, 5.0, 5.0, 5.0);
 	//We set up a light and its color
 	NE_LightSet(0,NE_White,0,-1,0);
 
@@ -108,11 +113,20 @@ int main()
 	char buffer[1024];
 	for(int i=0;i<10;i++)
 	{
-		Moth c;// = new Moth();
+		//Moth c;// = new Moth();
 		//c.init();
 		//moths[i] = c;
 		sprintf(buffer, "%d: c %1.2f,%1.2f,%1.2f s %1.2f,%1.2f,%1.2f  ", i, moths[i].X, moths[i].Y, moths[i].Z, moths[i].vX, moths[i].vY, moths[i].vZ);
 		strcat(coords,buffer);
+	}
+
+
+	for(int i=0;i<10;i++)
+	{
+		Moth_mod[i] = NE_ModelCreate(NE_Static);
+		NE_ModelLoadStaticMesh(Moth_mod[i],(u32*)cubo);
+		NE_ModelSetMaterial(Moth_mod[i], Material);
+		NE_ModelScale(Moth_mod[i], .1, .1, .1);
 	}
 
 	PA_OutputText(1, 2, 3, coords);
@@ -120,9 +134,7 @@ int main()
 	
 	while (1)
 	{
-		while(1)
-		{
-		}
+		
 		scanKeys();  //Get keys information
 		int keys = keysHeld();
 
@@ -131,12 +143,12 @@ int main()
 		if(keys & KEY_UP)
 		{
 
-			NE_ModelRotate(Model, 0, 0, 2);
-			RotoTranslate(translations, 0, 0, 2, 8);
+			//NE_ModelRotate(Model, 0, 0, 2);
+			//RotoTranslate(translations, 0, 0, 2, 8);
 
 			//PA_OutputText(1, 2, 3, "UP!");
 			//NE_ModelRotate(Model, 0, 0, 2);
-			RotoTranslate(translations, 0, 0, 2, 8);
+			//RotoTranslate(translations, 0, 0, 2, 8);
 
 			NE_CameraRotate (Camera, 0, 0, 2);
 		}
@@ -145,39 +157,37 @@ int main()
 			//PA_OutputText(1, 2, 3, "Down!");
 			//NE_ModelRotate(Model, 0, 0, -2);
 			NE_CameraRotate (Camera, 0, 0, -2);
-			RotoTranslate(translations, 0, 0, -2, 8);
+			//RotoTranslate(translations, 0, 0, -2, 8);
 		}
 		if(keys & KEY_RIGHT)
 		{	
 			//PA_OutputText(1, 2, 3, "Right!");
 			//NE_ModelRotate(Model, 0, 2, 0);
 			NE_CameraRotate (Camera, 0, 2, 0);
-			RotoTranslate(translations, 0, 2, 0, 8);
+			//RotoTranslate(translations, 0, 2, 0, 8);
 		}
 		if(keys & KEY_LEFT) 
 		{
 			//PA_OutputText(1, 2, 3, "left!!");
 			//NE_ModelRotate(Model, 0, -2, 0);
 			NE_CameraRotate (Camera, 0, -2, 0);
-			RotoTranslate(translations, 0, -2, 0, 8);
+			//RotoTranslate(translations, 0, -2, 0, 8);
 		}
 
 		NE_CameraMoveFree(Camera, (int)translations[0], (int)translations[1], (int)translations[2]);
 
 		//NE_CameraMoveFree(Camera, (int)translations[0], (int)translations[1], (int)translations[2]);
-		int* x1 = 0;
-		int * y1=0;
-			int * z1 = 0;
-		NE_ModelGetCoordI(Model, x1, y1, z1);
-		//PA_OutputText(1, 2, 3, "Position is x: %d, y:%d, z:%d", (int)translations[0], (int)translations[1], (int)translations[2]);
+		int x1, y1, z1;	
+		NE_ModelTranslate(Model, -0.01, 0, 0);//moves the model
+		NE_ModelGetCoordI(Model, &x1, &y1, &z1);
 		PA_OutputText(1, 2, 3, "Position is x: %d, y:%d, z:%d", x1, y1, z1);
-		NE_ModelTranslate(Model, -0.1, 0, 0);
-		a+= -0.1;
-		NE_CameraSet(Camera, -8,-6,1, //Position
-		                  a,0,0, //Look at
-						  0,1,0);//Up direction
-
-
+		NE_CameraSet(Camera, -8,-6,1, f32tofloat(x1), f32tofloat(y1), f32tofloat(z1), 0,1,0);
+		for(int i=0;i<10;i++)
+		{
+			moths[i].move();
+			NE_ModelSetCoord(Moth_mod[i],moths[i].X,moths[i].Y,moths[i].Z);
+			
+		}
 		PA_MoveSprite(0);
 		if (!PA_SpriteTouched(0))
 		{
@@ -200,7 +210,7 @@ int main()
 
 	
 
-		//NE_Process(Draw3DScene); //Draws scene
+		NE_Process(Draw3DScene); //Draws scene
 		//NE_WaitForVBL(NE_UPDATE_ANIMATIONS); //Wait for next frame
 		PA_WaitForVBL();
 		//PA_WaitForVBL();
