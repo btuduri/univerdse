@@ -32,11 +32,9 @@ glitchTools::~glitchTools(void)
 
 int glitchTools::ChoiceButtons(char *choices[], int nButtons)
 {
-	//initialize text on lower screen, background 0
-	//PA_InitText(0,0);
-    //PA_SetTextCol(0,31,0,0);
-	PA_InitCustomText(0,0,aafontq);
 
+	//PA_InitCustomText(0,0,aafontq);
+	PA_InitText(0,0);
 	
 	for (int i=0;i<nButtons; i++)
 	{
@@ -45,24 +43,7 @@ int glitchTools::ChoiceButtons(char *choices[], int nButtons)
 	}
 	//to have nButtons<>0
 	int g=nButtons+10;
-	//TOUCH VERSION
-	/*/
-	while (g==nButtons+10)
-	{
-		//if the user touches the screen...
-		if (Stylus.Held)
-		{
-			//...and it's one of the last 'nButton' lines
-			if(Stylus.Y>(184-(8*nButtons)))
-			{
-				//gets the index of the chosen line
-				g=(Stylus.Y-(184-(8*nButtons)))/8;
-				PA_InitText(1,0);
-				
-			}
-		}
-	}
-	//*/
+	
 	///CURSOR VERSION
 	PA_LoadSpritePal(0, // Screen
 			0, // Palette number
@@ -127,21 +108,15 @@ void glitchTools::SlowType(char text[])
 	wait=0;
 	//initializes text on touch screen, bg layer 1
 	//PA_InitText(0,1);
-	PA_InitCustomText(0,1,aafont);
+	//PA_InitCustomText(0,1,aafontq);
+	PA_InitText(0,1);
     //PA_SetTextCol(0,31,31,0);
 	//prints the text one char per frame
 	for (u32 i=0; i<=strlen(text); i++)
 	{
 		
 		PA_BoxText(0,1,2,30,22,text,i);
-		//AS_SoundQuickPlay(blip);
-		//PA_PlaySimpleSound(blip);
-		//AS_MP3DirectPlay((u8*)blip, (u32)blip_size);
-		/*if(Stylus.Held||Pad.Newpress.A)
-		{
-			PA_BoxText(0,1,2,30,22,text,strlen(text));
-			return;
-		}*/
+		
 		SlpThrd(wait);
 	}
 
@@ -151,8 +126,8 @@ void glitchTools::SlowQuote(char text[], char name[])
 {
 	wait=0;
 	//initializes text on touch screen, bg layer 1
-	//PA_InitText(0,1);
-	PA_InitCustomText(0,1,aafontq);
+PA_InitText(0,1);
+//	PA_InitCustomText(0,1,aafontq);
 	//PA_SetTextCol(0,0,0,31);
 	PA_OutputText(0,1,1,"- %s:",name);
     //PA_SetTextCol(0,31,0,0);
@@ -192,9 +167,11 @@ void glitchTools::LoadTopBackground(int bgN)
 	fadeIn(TOP, 1);
 }
 
+
+
 void glitchTools::loadBackground(int screen, int bg)
 {
-	switch (bg)
+/*	switch (bg)
 	{
 		case _BGBLUE:
 			PA_EasyBgLoad(screen, 3, bgblue);
@@ -277,7 +254,7 @@ void glitchTools::loadBackground(int screen, int bg)
 		case _LAURA:
 			PA_EasyBgLoad(screen, 3, laura);
 			break;
-		/*case _MAD1:
+		case _MAD1:
 			PA_EasyBgLoad(screen, 3, mad1);
 			break;
 		case _MAD2:
@@ -288,12 +265,12 @@ void glitchTools::loadBackground(int screen, int bg)
 			break;
 		case _MAD5:
 			PA_EasyBgLoad(screen, 3, mad5);
-			break;*/
+			break;
 
 	}
-
+*/
 }
-
+/*
 void glitchTools::LoadNPCSprite(int spriteNum)
 {
 	
@@ -375,14 +352,17 @@ void glitchTools::UnLoadNPCSprite(int spriteNum)
 	PA_DeleteBg(1, 2);
 }
 
+*/
+
+
 void glitchTools::InputToContinue()
 {
 	PA_LoadSpritePal(0, // Screen
 			1, // Palette number
-			(void*)arrow2_Pal);	// Palette name
+			(void*)arrow_Pal);	// Palette name
 	PA_CreateSprite(0, // Screen
 			1, // Sprite number
-			(void*)arrow2_Sprite, // Sprite name
+			(void*)arrow_Sprite, // Sprite name
 			OBJ_SIZE_8X8, // Sprite size
 			1, // 256 color mode
 			1, // Sprite palette number
@@ -432,6 +412,7 @@ void glitchTools::fadeOut(int screen, int duration)
 }
 void glitchTools::showMap()
 {
+	/*
 	fadeOut(TOP,1);
 	PA_EasyBgLoad(TOP, 0, map);		
 	fadeIn(TOP,1);
@@ -448,7 +429,7 @@ void glitchTools::showMap()
 		}
 		PA_WaitForVBL();
 	}
-	
+	*/
 }
 void glitchTools::showSave()
 {
@@ -487,6 +468,7 @@ void glitchTools::showOptions()
 }
 
 
+/*
 void glitchTools::LoadNoise()
 {
 	while (1)
@@ -551,6 +533,7 @@ void glitchTools::LoadIntro()
 
 }
 
+*/
 int glitchTools::SlpIntroThrd(int frames)
 {
 	for (int i=0; i<=frames; i++)
@@ -567,8 +550,8 @@ int glitchTools::SlowIntroType(char text[])
 {
 	wait=0;
 	//initializes text on touch screen, bg layer 1
-	//PA_InitText(0,1);
-	PA_InitCustomText(0,1,aafontq);
+	PA_InitText(0,1);
+//	PA_InitCustomText(0,1,aafontq);
     //PA_SetTextCol(0,31,31,0);
 	//prints the text one char per frame
 	for (u32 i=0; i<=strlen(text); i++)
@@ -579,14 +562,7 @@ int glitchTools::SlowIntroType(char text[])
 			return 1;
 		}
 		PA_BoxText(0,1,2,30,22,text,strlen(text));
-		//AS_SoundQuickPlay(blip);
-		//PA_PlaySimpleSound(blip);
-		//AS_MP3DirectPlay((u8*)blip, (u32)blip_size);
-		/*if(Stylus.Held||Pad.Newpress.A)
-		{
-			PA_BoxText(0,1,2,30,22,text,strlen(text));
-			return;
-		}*/
+		
 		SlpIntroThrd(wait);
 	}
  return 0;

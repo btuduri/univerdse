@@ -4,13 +4,17 @@
 #include <PA9.h>       // Include for PA_Lib
 #include <NEMain.h>
 #include <mikmod9.h>
-#include "gfx/all_gfx.c"
+//#include "gfx/all_gfx.c"
 
 #include "nitrocat.h"
 #include "texture.h"
 #include "cubo.h"
 #include "texcubo.h"
 #include "music.h"
+#include "Moth.h"
+
+
+
 
 
 NE_Camera * Camera;     //We use pointers to waste less ram if we finish 3D mode.
@@ -18,6 +22,8 @@ NE_Model * Model;
 NE_Material * Material; 
 NE_Material * MaterialCubo; 
 NE_Model  * Cubo;
+
+Moth moths[10];
 
 
 void RotoTranslate(float* translation, int rotX, int rotY, int rotZ, float distance)
@@ -65,48 +71,6 @@ int main()
 	irqSet(IRQ_HBLANK, NE_HBLFunc);
 	NE_Init3D();
 
-	/*
-	//LIBMIKMOD
-	MikMod_RegisterDriver(&drv_nds_hw);
-	//MikMod_RegisterDriver(&drv_nds_sw);
-	
-	// if we don't know what kind of module we're going to load we can register
-	// all loaders, but that will result in a larger binary
-	MikMod_RegisterAllLoaders();
-	//MikMod_RegisterLoader(&load_mod);
-	
-	if (MikMod_Init(""))
-	{
-		PA_OutputText(0, 1, 2, "Could not initialize mikmod, reason:\n%s\n", MikMod_strerror(MikMod_errno));
-		return 1;
-	}
-
-
-	MODULE* module = Player_LoadMemory(music, (u32)music_size, 64, 0);
-	if (!module)
-	{
-		PA_OutputText(0, 1, 2, "Could not load module, reason:\n%s\n", MikMod_strerror(MikMod_errno));
-		return 1;
-	}
-	
-	// Output some information
-	//PA_OutputText(0, 1, 3, "Title:    %s\n", module->songname);
-	//PA_OutputText(0, 1, 4, "Channels: %d\n", module->numchn);
-	
-	// call update with correct timing
-	TIMER0_CR = 0;
-	irqSet(IRQ_TIMER0, TimerInterrupt);
-	irqEnable(IRQ_TIMER0);
-	TIMER0_DATA = TIMER_FREQ_256(md_bpm * 50 / 125);
-	TIMER0_CR = TIMER_DIV_256 | TIMER_IRQ_REQ | TIMER_ENABLE;
-
-	//PA_OutputText(0, 1, 6, "Starting module");
-	//Player_Start(module);
-
-
-
-	//END LIBMIKMOD
-*/
 	PA_InitText(1, 2);
 	//PA_OutputSimpleText(1, 1, 2, "Hello World!");
 
@@ -138,37 +102,42 @@ int main()
 	NE_LightSet(0,NE_White,0,-1,0);
 
 
-	//SPRITES
-/*
-	PA_LoadSpritePal(0, // Screen
-			0, // Palette number
-			(void*)sprt_Pal);	// Palette name
-					
-		PA_CreateSprite(0, // Screen
-			0, // Sprite number
-			(void*)sprt_Sprite, // Sprite name
-			OBJ_SIZE_8X8, // Sprite size
-			1, // 256 color mode
-			0, // Sprite palette number
-			128, 96); // X and Y position on the screen
-
-
-*/
-	// Infinite loop to keep the program running
 	float translations[] = {0,0,0};
 	float a = 0;
+	char coords[1024] = "";
+	char buffer[1024];
+	for(int i=0;i<10;i++)
+	{
+		Moth c;// = new Moth();
+		//c.init();
+		//moths[i] = c;
+		sprintf(buffer, "%d: c %1.2f,%1.2f,%1.2f s %1.2f,%1.2f,%1.2f  ", i, moths[i].X, moths[i].Y, moths[i].Z, moths[i].vX, moths[i].vY, moths[i].vZ);
+		strcat(coords,buffer);
+	}
+
+	PA_OutputText(1, 2, 3, coords);
+	
+	
 	while (1)
 	{
+		while(1)
+		{
+		}
 		scanKeys();  //Get keys information
 		int keys = keysHeld();
-		
-		
-		
+
+		float translations[] = {0,0,0};
+
 		if(keys & KEY_UP)
 		{
+
+			NE_ModelRotate(Model, 0, 0, 2);
+			RotoTranslate(translations, 0, 0, 2, 8);
+
 			//PA_OutputText(1, 2, 3, "UP!");
 			//NE_ModelRotate(Model, 0, 0, 2);
 			RotoTranslate(translations, 0, 0, 2, 8);
+
 			NE_CameraRotate (Camera, 0, 0, 2);
 		}
 		if(keys & KEY_DOWN)
@@ -192,6 +161,9 @@ int main()
 			NE_CameraRotate (Camera, 0, -2, 0);
 			RotoTranslate(translations, 0, -2, 0, 8);
 		}
+
+		NE_CameraMoveFree(Camera, (int)translations[0], (int)translations[1], (int)translations[2]);
+
 		//NE_CameraMoveFree(Camera, (int)translations[0], (int)translations[1], (int)translations[2]);
 		int* x1 = 0;
 		int * y1=0;
@@ -206,11 +178,7 @@ int main()
 						  0,1,0);//Up direction
 
 
-		/**********
-		 * Moving the artificial horizon Sprite
-		 **********/
-		
-		/*PA_MoveSprite(0);
+		PA_MoveSprite(0);
 		if (!PA_SpriteTouched(0))
 		{
 			if(abs(PA_GetSpriteX(0,0) - 128)<3 && abs(PA_GetSpriteY(0,0) - 96)<3)
@@ -229,10 +197,12 @@ int main()
 
 
 		}
-*/
-		//
-		NE_Process(Draw3DScene); //Draws scene
-		NE_WaitForVBL(NE_UPDATE_ANIMATIONS); //Wait for next frame
+
+	
+
+		//NE_Process(Draw3DScene); //Draws scene
+		//NE_WaitForVBL(NE_UPDATE_ANIMATIONS); //Wait for next frame
+		PA_WaitForVBL();
 		//PA_WaitForVBL();
 	}
 	
