@@ -122,7 +122,7 @@ int main()
 						  0,1,0);//Up direction
 	
 	//Load mesh from RAM and assign it to the object "Model".
-	NE_ModelLoadStaticMesh(Model,(u32*)nitrocat);
+	NE_ModelLoadStaticMesh(Model,(u32*)cubo);
 	//Load a RGB texture from RAM and assign it to "Material".
 	NE_MaterialTexLoad(Material, GL_RGB, 128, 128, TEXGEN_TEXCOORD, (u8*) texture);
 	//Assign texture to model...
@@ -132,7 +132,8 @@ int main()
 	NE_ModelLoadStaticMesh(Cubo,(u32*)cubo);
 	NE_MaterialTexLoad(MaterialCubo, GL_RGB, 128, 128, TEXGEN_TEXCOORD, (u8*) texcubo);
 	NE_ModelSetMaterial(Cubo, MaterialCubo);
-	NE_ModelScale(Cubo, 5, 5, 5);
+	NE_ModelScale(Model, .2, .2, .2);
+	NE_ModelScale(Cubo, 5.5, 5.5, 5.5);
 	//We set up a light and its color
 	NE_LightSet(0,NE_White,0,-1,0);
 
@@ -155,6 +156,7 @@ int main()
 */
 	// Infinite loop to keep the program running
 	float translations[] = {0,0,0};
+	float a = 0;
 	while (1)
 	{
 		scanKeys();  //Get keys information
@@ -165,35 +167,43 @@ int main()
 		if(keys & KEY_UP)
 		{
 			//PA_OutputText(1, 2, 3, "UP!");
-			NE_ModelRotate(Model, 0, 0, 2);
+			//NE_ModelRotate(Model, 0, 0, 2);
 			RotoTranslate(translations, 0, 0, 2, 8);
 			NE_CameraRotate (Camera, 0, 0, 2);
 		}
 		if(keys & KEY_DOWN)
 		{
 			//PA_OutputText(1, 2, 3, "Down!");
-			NE_ModelRotate(Model, 0, 0, -2);
+			//NE_ModelRotate(Model, 0, 0, -2);
 			NE_CameraRotate (Camera, 0, 0, -2);
 			RotoTranslate(translations, 0, 0, -2, 8);
 		}
 		if(keys & KEY_RIGHT)
 		{	
 			//PA_OutputText(1, 2, 3, "Right!");
-			NE_ModelRotate(Model, 0, 2, 0);
+			//NE_ModelRotate(Model, 0, 2, 0);
 			NE_CameraRotate (Camera, 0, 2, 0);
 			RotoTranslate(translations, 0, 2, 0, 8);
 		}
 		if(keys & KEY_LEFT) 
 		{
 			//PA_OutputText(1, 2, 3, "left!!");
-			NE_ModelRotate(Model, 0, -2, 0);
+			//NE_ModelRotate(Model, 0, -2, 0);
 			NE_CameraRotate (Camera, 0, -2, 0);
 			RotoTranslate(translations, 0, -2, 0, 8);
 		}
 		//NE_CameraMoveFree(Camera, (int)translations[0], (int)translations[1], (int)translations[2]);
-
-		PA_OutputText(1, 2, 3, "Position is x: %d, y:%d, Z:%d", (int)translations[0], (int)translations[1], (int)translations[2]);
-
+		int* x1 = 0;
+		int * y1=0;
+			int * z1 = 0;
+		NE_ModelGetCoordI(Model, x1, y1, z1);
+		//PA_OutputText(1, 2, 3, "Position is x: %d, y:%d, z:%d", (int)translations[0], (int)translations[1], (int)translations[2]);
+		PA_OutputText(1, 2, 3, "Position is x: %d, y:%d, z:%d", x1, y1, z1);
+		NE_ModelTranslate(Model, -0.1, 0, 0);
+		a+= -0.1;
+		NE_CameraSet(Camera, -8,-6,1, //Position
+		                  a,0,0, //Look at
+						  0,1,0);//Up direction
 
 
 		/**********
