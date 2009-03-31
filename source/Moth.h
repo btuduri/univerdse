@@ -11,6 +11,8 @@ public:
 	float vX;
 	float vY;
 	float vZ;
+	float radius;
 	void init(void);
 	void move(void);
+	bool isColliding(float,float,float);
 };

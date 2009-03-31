@@ -14,7 +14,7 @@
 #include "Moth.h"
 
 
-
+#define NUMBER_OF_MOTHS 2
 
 
 NE_Camera * Camera;     //We use pointers to waste less ram if we finish 3D mode.
@@ -22,7 +22,8 @@ NE_Model * Model;
 NE_Material * Material; 
 NE_Material * MaterialCubo; 
 NE_Model  * Cubo;
-NE_Model  * Moth_mod[10];
+NE_Model  * Moth_mod[NUMBER_OF_MOTHS];
+
 
 Moth moths[10];
 
@@ -43,7 +44,7 @@ void Draw3DScene(void)
 	NE_ModelDraw(Model); //Draw model...
 	NE_PolyFormat(31,0,NE_LIGHT_ALL,NE_CULL_NONE,NE_MODULATION );
 	NE_ModelDraw(Cubo); //Draw model...
-	for(int i=0;i<10;i++)
+	for(int i=0;i<NUMBER_OF_MOTHS;i++)
 	{
 		NE_ModelDraw(Moth_mod[i]); //Draw model...
 	}
@@ -111,17 +112,15 @@ int main()
 	float a = 0;
 	char coords[1024] = "";
 	char buffer[1024];
-	for(int i=0;i<10;i++)
+	for(int i=0;i<NUMBER_OF_MOTHS;i++)
 	{
-		//Moth c;// = new Moth();
-		//c.init();
-		//moths[i] = c;
 		sprintf(buffer, "%d: c %1.2f,%1.2f,%1.2f s %1.2f,%1.2f,%1.2f  ", i, moths[i].X, moths[i].Y, moths[i].Z, moths[i].vX, moths[i].vY, moths[i].vZ);
-		strcat(coords,buffer);
+		//strcat(coords,buffer);
+		PA_OutputText(1, 0, i*12, buffer);
 	}
 
 
-	for(int i=0;i<10;i++)
+	for(int i=0;i<NUMBER_OF_MOTHS;i++)
 	{
 		Moth_mod[i] = NE_ModelCreate(NE_Static);
 		NE_ModelLoadStaticMesh(Moth_mod[i],(u32*)cubo);
@@ -129,7 +128,7 @@ int main()
 		NE_ModelScale(Moth_mod[i], .1, .1, .1);
 	}
 
-	PA_OutputText(1, 2, 3, coords);
+	
 	
 	
 	while (1)
@@ -142,47 +141,40 @@ int main()
 
 		if(keys & KEY_UP)
 		{
-
-			//NE_ModelRotate(Model, 0, 0, 2);
-			//RotoTranslate(translations, 0, 0, 2, 8);
-
-			//PA_OutputText(1, 2, 3, "UP!");
-			//NE_ModelRotate(Model, 0, 0, 2);
-			//RotoTranslate(translations, 0, 0, 2, 8);
-
-			NE_CameraRotate (Camera, 0, 0, 2);
+			NE_ModelTranslate(Model, -0.01, 0, 0);//moves the model
+			
 		}
 		if(keys & KEY_DOWN)
 		{
-			//PA_OutputText(1, 2, 3, "Down!");
-			//NE_ModelRotate(Model, 0, 0, -2);
-			NE_CameraRotate (Camera, 0, 0, -2);
-			//RotoTranslate(translations, 0, 0, -2, 8);
+			NE_ModelTranslate(Model, 0.01, 0, 0);//moves the model
 		}
 		if(keys & KEY_RIGHT)
 		{	
-			//PA_OutputText(1, 2, 3, "Right!");
-			//NE_ModelRotate(Model, 0, 2, 0);
-			NE_CameraRotate (Camera, 0, 2, 0);
-			//RotoTranslate(translations, 0, 2, 0, 8);
+			NE_ModelTranslate(Model, 0, -0.01, 0);//moves the model
 		}
 		if(keys & KEY_LEFT) 
 		{
-			//PA_OutputText(1, 2, 3, "left!!");
-			//NE_ModelRotate(Model, 0, -2, 0);
-			NE_CameraRotate (Camera, 0, -2, 0);
-			//RotoTranslate(translations, 0, -2, 0, 8);
+			NE_ModelTranslate(Model, 0, 0.01, 0);//moves the model
 		}
+		if(keys & KEY_A)
+		{	
+			NE_ModelTranslate(Model, 0, 0, -0.01);//moves the model
+		}
+		if(keys & KEY_B) 
+		{
+			NE_ModelTranslate(Model, 0, 0, 0.01);//moves the model
+		}
+
 
 		NE_CameraMoveFree(Camera, (int)translations[0], (int)translations[1], (int)translations[2]);
 
 		//NE_CameraMoveFree(Camera, (int)translations[0], (int)translations[1], (int)translations[2]);
 		int x1, y1, z1;	
-		NE_ModelTranslate(Model, -0.01, 0, 0);//moves the model
+		
 		NE_ModelGetCoordI(Model, &x1, &y1, &z1);
 		PA_OutputText(1, 2, 3, "Position is x: %d, y:%d, z:%d", x1, y1, z1);
 		NE_CameraSet(Camera, -8,-6,1, f32tofloat(x1), f32tofloat(y1), f32tofloat(z1), 0,1,0);
-		for(int i=0;i<10;i++)
+		for(int i=0;i<NUMBER_OF_MOTHS;i++)
 		{
 			moths[i].move();
 			NE_ModelSetCoord(Moth_mod[i],moths[i].X,moths[i].Y,moths[i].Z);
@@ -210,7 +202,7 @@ int main()
 
 	
 
-		NE_Process(Draw3DScene); //Draws scene
+		//NE_Process(Draw3DScene); //Draws scene
 		//NE_WaitForVBL(NE_UPDATE_ANIMATIONS); //Wait for next frame
 		PA_WaitForVBL();
 		//PA_WaitForVBL();

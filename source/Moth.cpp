@@ -9,6 +9,8 @@ Moth::Moth(void)
 	vX = (float)(PA_RandMax(50))/300;
 	vY = (float)(PA_RandMax(50))/300;
 	vZ = (float)(PA_RandMax(50))/300;
+
+	radius = 0.4;
 }
 
 Moth::~Moth(void)
@@ -35,4 +37,11 @@ void Moth::move(void)
 		vY = -vY;
 	if(Z>=5.0 || Z<-5)
 		vZ = -vZ;
+}
+
+bool Moth::isColliding(float x, float y, float z)
+{
+	float distance = sqrt(pow(X-x,2) + pow(Y-y,2) + pow(Z-z,2));
+	return (distance < radius);
+
 }
