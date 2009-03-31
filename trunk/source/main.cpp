@@ -4,6 +4,8 @@
 #include <PA9.h>       // Include for PA_Lib
 #include <NEMain.h>
 #include <mikmod9.h>
+#include "glitchtools.h"
+
 //#include "gfx/all_gfx.c"
 
 #include "nitrocat.h"
@@ -17,7 +19,7 @@
 #include "Moth.h"
 
 
-#define NUMBER_OF_MOTHS 10
+#define NUMBER_OF_MOTHS 2
 
 
 NE_Camera * Camera;     //We use pointers to waste less ram if we finish 3D mode.
@@ -31,7 +33,7 @@ NE_Model  * Moth_mod[NUMBER_OF_MOTHS];
 
 Moth moths[NUMBER_OF_MOTHS];
 
-
+glitchTools tool;
 void RotoTranslate(float* translation, int rotX, int rotY, int rotZ, float distance)
 {
 	
@@ -92,7 +94,7 @@ int main()
 	rb = NE_MaterialCreate();
 	
 	//Set coordinates for the camera
-	NE_CameraSet(Camera, -4,-3,1, //Position
+	NE_CameraSet(Camera, -1,-1,1, //Position
 		                  0,0,0, //Look at
 						  0,1,0);//Up direction
 	
@@ -138,11 +140,57 @@ int main()
 	
 	while (1)
 	{
-		
+		/*
+		while(1)
+		{
+			
+			//tool.InputToContinue();
+			tool.SlowType(_INTRO_00);
+			tool.InputToContinue();
+			tool.SlowType(_INTRO_01);
+			tool.InputToContinue();
+			tool.SlowType(_INTRO_02);
+			tool.InputToContinue();
+			tool.SlowType(_INTRO_03);
+			tool.InputToContinue();
+			tool.SlowType(_INTRO_04);
+			tool.InputToContinue();
+			tool.SlowType(_INTRO_05);
+			tool.InputToContinue();
+			tool.SlowType(_INTRO_06);
+			tool.InputToContinue();
+			tool.SlowType(_INTRO_07);
+			tool.InputToContinue();
+			tool.SlowType(_INTRO_08);
+			tool.InputToContinue();
+			tool.SlowType(_INTRO_09);
+			tool.InputToContinue();
+			tool.SlowType(_INTRO_10);
+			tool.InputToContinue();
+			tool.SlowType(_INTRO_11);
+			tool.InputToContinue();
+			tool.SlowType(_INTRO_12);
+			tool.InputToContinue();
+			//Chapter I
+			tool.SlowType(_CH1_00);
+			tool.InputToContinue();
+			tool.SlowType(_CH1_01);
+			tool.InputToContinue();
+			tool.SlowType(_CH1_02);
+			tool.InputToContinue();
+			tool.SlowType(_CH1_03);
+			tool.InputToContinue();
+
+		}
+		//*/
 		scanKeys();  //Get keys information
 		int keys = keysHeld();
 
 		float translations[] = {0,0,0};
+		int x1, y1, z1;	
+		
+		NE_ModelGetCoordI(Model, &x1, &y1, &z1);
+		PA_OutputText(1, 0, NUMBER_OF_MOTHS + 1, "Position is x: %d, y:%d, z:%d   ", x1, y1, z1);
 
 		if(keys & KEY_UP)
 		{
@@ -169,16 +217,18 @@ int main()
 		{
 			NE_ModelTranslate(Model, 0, 0, 0.05);//moves the model
 		}
+		if (keys)
+		{
+			NE_CameraSet(Camera, 1,2,2, f32tofloat(x1), f32tofloat(y1), f32tofloat(z1), -1,0,0);
+		}
 
-
-		NE_CameraMoveFree(Camera, (int)translations[0], (int)translations[1], (int)translations[2]);
 
 		//NE_CameraMoveFree(Camera, (int)translations[0], (int)translations[1], (int)translations[2]);
-		int x1, y1, z1;	
+
+		//NE_CameraMoveFree(Camera, (int)translations[0], (int)translations[1], (int)translations[2]);
 		
-		NE_ModelGetCoordI(Model, &x1, &y1, &z1);
-		PA_OutputText(1, 0, NUMBER_OF_MOTHS + 1, "Position is x: %d, y:%d, z:%d   ", x1, y1, z1);
-		NE_CameraSet(Camera, 1,2,2, f32tofloat(x1), f32tofloat(y1), f32tofloat(z1), -1,0,0);
+		
+		//NE_CameraSet(Camera, 1,2,2, f32tofloat(x1), f32tofloat(y1), f32tofloat(z1), -1,0,0);
 		for(int i=0;i<NUMBER_OF_MOTHS;i++)
 		{
 			moths[i].move();
@@ -196,6 +246,7 @@ int main()
 			PA_OutputText(1, 0, NUMBER_OF_MOTHS + 3, "Model crashed.");
 			while(1){}
 		}
+		/*
 		PA_MoveSprite(0);
 		if (!PA_SpriteTouched(0))
 		{
@@ -215,8 +266,8 @@ int main()
 
 
 		}
-
-	
+		*/
+		
 
 		NE_Process(Draw3DScene); //Draws scene
 		//NE_WaitForVBL(NE_UPDATE_ANIMATIONS); //Wait for next frame

@@ -105,17 +105,17 @@ void glitchTools::EraseButtons( int num)
 }
 void glitchTools::SlowType(char text[])
 {
-	wait=0;
+	wait=2;
 	//initializes text on touch screen, bg layer 1
 	//PA_InitText(0,1);
 	//PA_InitCustomText(0,1,aafontq);
-	PA_InitText(0,1);
-    //PA_SetTextCol(0,31,31,0);
+	PA_InitText(1,1);
+    PA_SetTextCol(0,31,31,0);
 	//prints the text one char per frame
 	for (u32 i=0; i<=strlen(text); i++)
 	{
 		
-		PA_BoxText(0,1,2,30,22,text,i);
+		PA_BoxText(1,1,2,30,22,text,i);
 		
 		SlpThrd(wait);
 	}
@@ -357,10 +357,10 @@ void glitchTools::UnLoadNPCSprite(int spriteNum)
 
 void glitchTools::InputToContinue()
 {
-	PA_LoadSpritePal(0, // Screen
+	PA_LoadSpritePal(1, // Screen
 			1, // Palette number
 			(void*)arrow_Pal);	// Palette name
-	PA_CreateSprite(0, // Screen
+	PA_CreateSprite(1, // Screen
 			1, // Sprite number
 			(void*)arrow_Sprite, // Sprite name
 			OBJ_SIZE_8X8, // Sprite size
@@ -375,11 +375,11 @@ void glitchTools::InputToContinue()
 		//blinking cursor	
 		if(cnt%20<10)
 			//i--;
-			PA_SetSpriteAnim(0, 1, 0);
+			PA_SetSpriteAnim(1, 1, 0);
 		else
 			//i++;
-			PA_SetSpriteAnim(0, 1, 1);
-		//PA_SetSpriteAnim(0, 1, i); // screen, sprite, frame
+			PA_SetSpriteAnim(1, 1, 1);
+		//PA_SetSpriteAnim(1, 1, i); // screen, sprite, frame
 		if(Stylus.Held||Pad.Newpress.A)
 			i=2;
 		if(Pad.Newpress.Select&&inv.map)
