@@ -11,22 +11,25 @@
 #include "cubo.h"
 #include "sphere.h"
 #include "texcubo.h"
+#include "test_pal.h"
+#include "test_tex.h"
 #include "music.h"
 #include "Moth.h"
 
 
-#define NUMBER_OF_MOTHS 2
+#define NUMBER_OF_MOTHS 10
 
 
 NE_Camera * Camera;     //We use pointers to waste less ram if we finish 3D mode.
 NE_Model * Model; 
 NE_Material * Material; 
 NE_Material * MaterialCubo; 
+NE_Material * rb;
 NE_Model  * Cubo;
 NE_Model  * Moth_mod[NUMBER_OF_MOTHS];
 
 
-Moth moths[10];
+Moth moths[NUMBER_OF_MOTHS];
 
 
 void RotoTranslate(float* translation, int rotX, int rotY, int rotZ, float distance)
@@ -43,7 +46,7 @@ void Draw3DScene(void)
 {
 	NE_CameraUse(Camera);   //Set camera
 	NE_ModelDraw(Model); //Draw model...
-	NE_PolyFormat(31,0,NE_LIGHT_ALL,NE_CULL_NONE,NE_MODULATION );
+	NE_PolyFormat(31,0,NE_LIGHT_ALL,NE_CULL_NONE,NE_USE_FOG );
 	NE_ModelDraw(Cubo); //Draw model...
 	for(int i=0;i<NUMBER_OF_MOTHS;i++)
 	{
@@ -86,9 +89,10 @@ int main()
 	Camera = NE_CameraCreate();      //If you don't do this, the game will crash.
 	Material = NE_MaterialCreate();
 	MaterialCubo = NE_MaterialCreate();
+	rb = NE_MaterialCreate();
 	
 	//Set coordinates for the camera
-	NE_CameraSet(Camera, -8,-6,1, //Position
+	NE_CameraSet(Camera, -4,-3,1, //Position
 		                  0,0,0, //Look at
 						  0,1,0);//Up direction
 	
@@ -96,18 +100,19 @@ int main()
 	NE_ModelLoadStaticMesh(Model,(u32*)sphere);
 	//Load a RGB texture from RAM and assign it to "Material".
 	NE_MaterialTexLoad(Material, GL_RGB, 128, 128, TEXGEN_TEXCOORD, (u8*) texture);
+	NE_MaterialTexLoad(rb, GL_RGB, 128, 128, TEXGEN_TEXCOORD, (u8*) test_tex);
 	//Assign texture to model...
-	NE_ModelSetMaterial(Model, Material);
+	NE_ModelSetMaterial(Model, rb);
 	
 	Cubo = NE_ModelCreate(NE_Static);
 	NE_ModelLoadStaticMesh(Cubo,(u32*)cubo);
 	NE_MaterialTexLoad(MaterialCubo, GL_RGB, 128, 128, TEXGEN_TEXCOORD, (u8*) texcubo);
 	NE_ModelSetMaterial(Cubo, MaterialCubo);
-	NE_ModelScale(Model, .4, .4, .4);
+	NE_ModelScale(Model, .6, .6, .6);
 	NE_ModelScale(Cubo, 5.0, 5.0, 5.0);
 	//We set up a light and its color
 	NE_LightSet(0,NE_DarkBlue,0,-1,0);
-	NE_LightSet(1,NE_White,0,0,0);
+	//NE_LightSet(1,NE_White,0,0,0);
 
 	float translations[] = {0,0,0};
 	float a = 0;
@@ -141,28 +146,28 @@ int main()
 
 		if(keys & KEY_UP)
 		{
-			NE_ModelTranslate(Model, -0.01, 0, 0);//moves the model
+			NE_ModelTranslate(Model, -0.05, 0, 0);//moves the model
 			
 		}
 		if(keys & KEY_DOWN)
 		{
-			NE_ModelTranslate(Model, 0.01, 0, 0);//moves the model
+			NE_ModelTranslate(Model, 0.05, 0, 0);//moves the model
 		}
 		if(keys & KEY_RIGHT)
 		{	
-			NE_ModelTranslate(Model, 0, -0.01, 0);//moves the model
+			NE_ModelTranslate(Model, 0, -0.05, 0);//moves the model
 		}
 		if(keys & KEY_LEFT) 
 		{
-			NE_ModelTranslate(Model, 0, 0.01, 0);//moves the model
+			NE_ModelTranslate(Model, 0, 0.05, 0);//moves the model
 		}
 		if(keys & KEY_A)
 		{	
-			NE_ModelTranslate(Model, 0, 0, -0.01);//moves the model
+			NE_ModelTranslate(Model, 0, 0, -0.05);//moves the model
 		}
 		if(keys & KEY_B) 
 		{
-			NE_ModelTranslate(Model, 0, 0, 0.01);//moves the model
+			NE_ModelTranslate(Model, 0, 0, 0.05);//moves the model
 		}
 
 
@@ -173,7 +178,7 @@ int main()
 		
 		NE_ModelGetCoordI(Model, &x1, &y1, &z1);
 		PA_OutputText(1, 0, NUMBER_OF_MOTHS + 1, "Position is x: %d, y:%d, z:%d   ", x1, y1, z1);
-		NE_CameraSet(Camera, -8,-6,1, f32tofloat(x1), f32tofloat(y1), f32tofloat(z1), 0,1,0);
+		NE_CameraSet(Camera, 1,2,2, f32tofloat(x1), f32tofloat(y1), f32tofloat(z1), -1,0,0);
 		for(int i=0;i<NUMBER_OF_MOTHS;i++)
 		{
 			moths[i].move();
@@ -186,7 +191,7 @@ int main()
 			
 		}
 		PA_OutputText(1, 0, NUMBER_OF_MOTHS + 2, "%d collisions so far.  ", collisions);
-		if (collisions>20)
+		if (collisions>1000)
 		{
 			PA_OutputText(1, 0, NUMBER_OF_MOTHS + 3, "Model crashed.");
 			while(1){}
@@ -213,7 +218,7 @@ int main()
 
 	
 
-		//NE_Process(Draw3DScene); //Draws scene
+		NE_Process(Draw3DScene); //Draws scene
 		//NE_WaitForVBL(NE_UPDATE_ANIMATIONS); //Wait for next frame
 		PA_WaitForVBL();
 		//PA_WaitForVBL();
