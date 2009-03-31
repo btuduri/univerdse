@@ -5,8 +5,8 @@
 #define TOP 1
 #define TOUCH 0
 
-#define _PLAYER "Xavier"
-#define _NPC01 "Laura"
+#define _PLAYER "X"
+#define _NPC01 "Elke"
 
 
 #define STOP_HERE while(1)\

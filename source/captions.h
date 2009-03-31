@@ -27,7 +27,7 @@
 #define _INTRO_07 \
 	"  Exactly fifty years after the first sighting of the Mothman, mankind was to face the greatest nightmare ever known.\n  As if they were celebrating a jubilee for that particular event, thousands of moth-shaped beings were spotted descending from the sky, thus giving irrefutable proof thet we were not alone in the universe."
 #define _INTRO_08 \
-	"  But it was not a joyous jubilee, as the Mothmen proved since the beginning to be the deadliest foe man had ever seen.\n  As Angels of Death come from Hell, they began kidnapping humans, killing those who daret to resist.\n  No weapon seemed effective against them and, for a fallen Mothman, at least ten came from above to replace their comrade."
+	"  But it was not a joyous jubilee, as the Mothmen proved since the beginning to be the deadliest foe man had ever seen.\n  As Angels of Death come from Hell, they began kidnapping humans, killing those who dared to resist.\n  No weapon seemed effective against them and, for a fallen Mothman, at least ten came from above to replace their comrade."
 #define _INTRO_09 \
 	"  Those who were taken by the Mothmen disappeared between the clouds, their fate unknown.\n  The few human left took shelter in the depth of the underground, hoping to escape the scourge sent from the sky."
 #define _INTRO_10 \
@@ -39,12 +39,18 @@
 
 
 //-----------LIVING_ROOM----------------//
-#define _CH1_LR_00 \
-	"\n\n         Harris Castle    \n\n          Living Room"
-#define _CH1_LR_01 \
-	"A dim light illuminates the room. Harris was a very rich man, and it shows.\nThis room could be an antiquarian's heaven.\nTake that painting, for instance. It could be worth a ten thousands quids, at least."
-#define _CH1_LR_02 \
-	"I hope i do not have to wait too much..."
-#define _CH1_LR_03 \
-	"There's no sign of Laura in the room. No sound can be heard from upstairs.\n\n What will you do?"
+#define _CH1_00 \
+	"\n\n         Chapter I    \n\n   Death From Above"
+#define _CH1_01 \
+	"\n\n        Shelter 075    \n\n   Outskirts of Berlin"
+#define _CH1_02 \
+	"\n\n     April 25, 2018"
+#define _CH1_03 \
+	"  Two years have passed since the first raid of the Moths. Cities have been abandoned and left to decay.\n  Squads of Moths seem to regularly patrol the ruins of every major city, so just a small number of reckless explorers dare to venture on the surface."
+#define _CH1_04 \
+	"  Meanwhile, people has learnt to live in the shadow, wisely managing the few resources left. The shelters are organized like towns, but traveling from one to another is quite hard and risky, as sometimes the Moths probe some of the underground tunnels in a hunt for survivors."
+#define _CH1_05 \
+	"  Shelter 075 is one of the oldest,"
+#define _CH1_06 \
+	"  Two years have passed since the first raid of the Mothmen. Cities have been abandoned and left to decay.\n  Squads of Mothmen seem to regularly patrol the ruins of every major city, so just a small number of reckless explorers dare to venture on the surface."
 
