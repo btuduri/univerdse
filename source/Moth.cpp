@@ -10,7 +10,7 @@ Moth::Moth(void)
 	vY = (float)(PA_RandMax(50))/300;
 	vZ = (float)(PA_RandMax(50))/300;
 
-	radius = 0.4;
+	radius = 1;
 }
 
 Moth::~Moth(void)
