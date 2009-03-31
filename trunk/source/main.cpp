@@ -9,6 +9,7 @@
 #include "nitrocat.h"
 #include "texture.h"
 #include "cubo.h"
+#include "sphere.h"
 #include "texcubo.h"
 #include "music.h"
 #include "Moth.h"
@@ -92,7 +93,7 @@ int main()
 						  0,1,0);//Up direction
 	
 	//Load mesh from RAM and assign it to the object "Model".
-	NE_ModelLoadStaticMesh(Model,(u32*)cubo);
+	NE_ModelLoadStaticMesh(Model,(u32*)sphere);
 	//Load a RGB texture from RAM and assign it to "Material".
 	NE_MaterialTexLoad(Material, GL_RGB, 128, 128, TEXGEN_TEXCOORD, (u8*) texture);
 	//Assign texture to model...
@@ -102,11 +103,11 @@ int main()
 	NE_ModelLoadStaticMesh(Cubo,(u32*)cubo);
 	NE_MaterialTexLoad(MaterialCubo, GL_RGB, 128, 128, TEXGEN_TEXCOORD, (u8*) texcubo);
 	NE_ModelSetMaterial(Cubo, MaterialCubo);
-	NE_ModelScale(Model, .2, .2, .2);
+	NE_ModelScale(Model, .4, .4, .4);
 	NE_ModelScale(Cubo, 5.0, 5.0, 5.0);
 	//We set up a light and its color
-	NE_LightSet(0,NE_White,0,-1,0);
-
+	NE_LightSet(0,NE_DarkBlue,0,-1,0);
+	NE_LightSet(1,NE_White,0,0,0);
 
 	float translations[] = {0,0,0};
 	float a = 0;
@@ -114,9 +115,7 @@ int main()
 	char buffer[1024];
 	for(int i=0;i<NUMBER_OF_MOTHS;i++)
 	{
-		sprintf(buffer, "%d: c %1.2f,%1.2f,%1.2f s %1.2f,%1.2f,%1.2f  ", i, moths[i].X, moths[i].Y, moths[i].Z, moths[i].vX, moths[i].vY, moths[i].vZ);
-		//strcat(coords,buffer);
-		PA_OutputText(1, 0, i*12, buffer);
+		
 	}
 
 
@@ -126,9 +125,10 @@ int main()
 		NE_ModelLoadStaticMesh(Moth_mod[i],(u32*)cubo);
 		NE_ModelSetMaterial(Moth_mod[i], Material);
 		NE_ModelScale(Moth_mod[i], .1, .1, .1);
+		NE_ModelSetCoord(Moth_mod[i],moths[i].X+1,moths[i].Y+1,moths[i].Z+1);
 	}
 
-	
+	int collisions = 0;
 	
 	
 	while (1)
@@ -172,13 +172,24 @@ int main()
 		int x1, y1, z1;	
 		
 		NE_ModelGetCoordI(Model, &x1, &y1, &z1);
-		PA_OutputText(1, 2, 3, "Position is x: %d, y:%d, z:%d", x1, y1, z1);
+		PA_OutputText(1, 0, NUMBER_OF_MOTHS + 1, "Position is x: %d, y:%d, z:%d   ", x1, y1, z1);
 		NE_CameraSet(Camera, -8,-6,1, f32tofloat(x1), f32tofloat(y1), f32tofloat(z1), 0,1,0);
 		for(int i=0;i<NUMBER_OF_MOTHS;i++)
 		{
 			moths[i].move();
 			NE_ModelSetCoord(Moth_mod[i],moths[i].X,moths[i].Y,moths[i].Z);
+			sprintf(buffer, "%d: c %1.2f,%1.2f,%1.2f    ", i, moths[i].X, moths[i].Y, moths[i].Z);
+			//strcat(coords,buffer);
+			PA_OutputText(1, 0, i, buffer);
+			if(moths[i].isColliding(x1,y1,z1))
+				collisions++;
 			
+		}
+		PA_OutputText(1, 0, NUMBER_OF_MOTHS + 2, "%d collisions so far.  ", collisions);
+		if (collisions>20)
+		{
+			PA_OutputText(1, 0, NUMBER_OF_MOTHS + 3, "Model crashed.");
+			while(1){}
 		}
 		PA_MoveSprite(0);
 		if (!PA_SpriteTouched(0))
