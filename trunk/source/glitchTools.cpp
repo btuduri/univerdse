@@ -23,6 +23,7 @@ glitchTools::glitchTools(void)
 	PA_CreateSprite(0, 1,(void*)arrow2_Sprite, OBJ_SIZE_8X16,1, 1, 238, 176);*/
 
 	this->inv.map=0;
+	fatInitDefault();
 }
 
 glitchTools::~glitchTools(void)
@@ -447,7 +448,7 @@ void glitchTools::showSave()
 	EraseButtons(2);
 	//sav.name="player";
 	//sav.place=status;
-	PA_Save32bit(0,status);
+	//PA_Save32bit(0,status);
 	
 	SlowType("Save Completed                                                           ");
 	

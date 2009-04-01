@@ -116,9 +116,8 @@ int main()
 	NE_LightSet(0,NE_DarkBlue,0,-1,0);
 	//NE_LightSet(1,NE_White,0,0,0);
 
-	float translations[] = {0,0,0};
-	float a = 0;
-	char coords[1024] = "";
+	
+	
 	char buffer[1024];
 	for(int i=0;i<NUMBER_OF_MOTHS;i++)
 	{
@@ -186,7 +185,7 @@ int main()
 		scanKeys();  //Get keys information
 		int keys = keysHeld();
 
-		float translations[] = {0,0,0};
+		
 		int x1, y1, z1;	
 		
 		NE_ModelGetCoordI(Model, &x1, &y1, &z1);

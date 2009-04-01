@@ -9,6 +9,7 @@
 #define _OPTIONS "Options"
 
 #define _BLANK ""
+#define _SUS "..."
 
 #define _INTRO_00 "\n\n        November 15\n           1966"
 
@@ -38,7 +39,7 @@
 	"  But God...                                                                                                                                                                           ..was nowhere to be seen."
 
 
-//-----------LIVING_ROOM----------------//
+//-----------CHAPTER I----------------//
 #define _CH1_00 \
 	"\n\n         Chapter I    \n\n   Death From Above"
 #define _CH1_01 \
@@ -54,3 +55,53 @@
 #define _CH1_06 \
 	"  Two years have passed since the first raid of the Mothmen. Cities have been abandoned and left to decay.\n  Squads of Mothmen seem to regularly patrol the ruins of every major city, so just a small number of reckless explorers dare to venture on the surface."
 
+
+
+
+//-----------CHAPTER V----------------//
+#define _CH5_00 \
+	"\n\n         Chapter I    \n\n   Ex Inferi, Ad Inferi"
+#define _CH5_01 \
+	"*Pant* *Pant*\nStop! Stop, I said!"
+#define _CH5_02 \
+	"What?"
+#define _CH5_03 \
+	"Are we.. I mean, are we gonna back home? Just... home?"
+#define _CH5_04 \
+	"Of course we are! Where else in the world should we go to?"
+#define _CH5_05 \
+	"But you.. heard them. We could not have a home anymore. What if there's no place for us to go? What if the moths already have taken, or destroyed everything?"
+#define _CH5_06 \
+	"Yes... yes, I heard them.\nWe may well be going out from a hell straight into another."
+#define _CH5_07 \
+	"So! What are we going to do? Maybe... we just should wait to die... here..."
+#define _CH5_07_0 \
+	"Hey! Snap out of it!"
+#define _CH5_07_1 \
+	"Fine, do as you want"
+#define _CH5_07_0_0 \
+	"Hey! Snap out of it! I can't believe all that bullshit you're saying!\nCan't you understand I climbed all the way up here just to take you home?\nCome on! there's people waiting for you.. down there!"
+#define _CH5_07_0_1 \
+	"R-Really? You did this... for me?"
+#define _CH5_07_0_1_0 \
+	"I could not leave you"
+#define _CH5_07_0_1_1 \
+	"Everyone would have done so"
+#define _CH5_07_0_1_0_0 \
+	"I could never ever leave you in the hands of the Moths... because if they were to hurt you, I would never have forgiven myself.\nI think... I think I may have feelings for you."
+#define _CH5_07_0_1_0_1 \
+	"I... I don't know what to say."
+#define _CH5_07_0_1_0_2 \
+	"Don't say anything. Just come with me.. will you?"
+#define _CH5_07_0_1_1_0 \
+	"Everyone would have come to rescue you! I mean... Nobody would leave a friend in need. And... we're friends, right?"
+#define _CH5_07_0_1_1_1 \
+	"If you say so..."
+#define _CH5_07_0_2 \
+	"Come on now! let's get out of here!"
+#define _CH5_07_1_0 \
+	"If you want to stay here, fine, do it. But what will your loved one feel, seeing you're not coming back?\nCan't you see how selfish you are?"
+#define _CH5_08 \
+	"We should... go back."
+#define _CH5_09 \
+	"Atta girl. Now just stay behind me and everything will be fine. Right?"
