@@ -1,6 +1,7 @@
 #pragma once
 
 #include "captions.h"
+#include <fat.h>
 
 #define TOP 1
 #define TOUCH 0
