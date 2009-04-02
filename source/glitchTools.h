@@ -1,8 +1,8 @@
 #pragma once
 
 #include "captions.h"
-#include <fat.h>
-
+//#include "efs_lib.h"
+//#include <fat.h>
 #define TOP 1
 #define TOUCH 0
 
@@ -74,7 +74,7 @@ public:
 	~glitchTools(void);
 
 	int ChoiceButtons(char *choices[], int nButtons);
-
+	int SaveData(int stage, int score);
 	void SlowType(char text[]);
 	int SlowIntroType(char text[]);
 	void SlowQuote(char text[], char name[]);

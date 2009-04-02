@@ -23,7 +23,7 @@ glitchTools::glitchTools(void)
 	PA_CreateSprite(0, 1,(void*)arrow2_Sprite, OBJ_SIZE_8X16,1, 1, 238, 176);*/
 
 	this->inv.map=0;
-	fatInitDefault();
+	//fatInitDefault();
 }
 
 glitchTools::~glitchTools(void)
@@ -31,11 +31,17 @@ glitchTools::~glitchTools(void)
 	//destructor
 }
 
+
+int glitchTools::SaveData(int stage, int score)
+{
+	return 0;
+}
+
 int glitchTools::ChoiceButtons(char *choices[], int nButtons)
 {
 
 	//PA_InitCustomText(0,0,aafontq);
-	PA_InitText(0,0);
+	PA_InitText(TOUCH,0);
 	
 	for (int i=0;i<nButtons; i++)
 	{
@@ -69,7 +75,7 @@ int glitchTools::ChoiceButtons(char *choices[], int nButtons)
 			{
 				//gets the index of the chosen line
 				g=(Stylus.Y-(184-(8*nButtons)))/8;
-				PA_InitText(1,0);
+				//PA_InitText(TOUCH,0);
 				
 			}
 		}
@@ -101,7 +107,7 @@ void glitchTools::EraseButtons( int num)
 {
 	for (int i=0; i<num; i++)
 	{
-		PA_OutputSimpleText(0,1,(22-i), "                                 ");
+		PA_OutputSimpleText(TOUCH,1,(22-i), "                                 ");
 	}
 }
 void glitchTools::SlowType(char text[])
@@ -110,8 +116,8 @@ void glitchTools::SlowType(char text[])
 	//initializes text on touch screen, bg layer 1
 	//PA_InitText(0,1);
 	//PA_InitCustomText(0,1,aafontq);
-	PA_InitText(1,1);
-    PA_SetTextCol(0,31,31,0);
+	PA_InitText(TOUCH,1);
+    PA_SetTextCol(TOUCH,31,31,0);
 	//prints the text one char per frame
 	for (u32 i=0; i<=strlen(text); i++)
 	{
@@ -127,16 +133,16 @@ void glitchTools::SlowQuote(char text[], char name[])
 {
 	wait=0;
 	//initializes text on touch screen, bg layer 1
-PA_InitText(0,1);
+PA_InitText(TOUCH,1);
 //	PA_InitCustomText(0,1,aafontq);
 	//PA_SetTextCol(0,0,0,31);
-	PA_OutputText(0,1,1,"- %s:",name);
+	PA_OutputText(TOUCH,1,1,"- %s:",name);
     //PA_SetTextCol(0,31,0,0);
 	//prints the text one char per frame
 	for (u32 i=0; i<=strlen(text); i++)
 	{
 		//if(Stylus.Held||Pad.Newpress.A) wait=0;
-		PA_BoxText(0,1,3,30,22,text,i);
+		PA_BoxText(TOUCH,1,3,30,22,text,i);
 		//AS_SoundQuickPlay(bleep);
 //		AS_MP3DirectPlay((u8*)blip, (u32)blip_size);
 		SlpThrd(wait);
@@ -358,10 +364,10 @@ void glitchTools::UnLoadNPCSprite(int spriteNum)
 
 void glitchTools::InputToContinue()
 {
-	PA_LoadSpritePal(1, // Screen
+	PA_LoadSpritePal(TOUCH, // Screen
 			1, // Palette number
 			(void*)arrow_Pal);	// Palette name
-	PA_CreateSprite(1, // Screen
+	PA_CreateSprite(TOUCH, // Screen
 			1, // Sprite number
 			(void*)arrow_Sprite, // Sprite name
 			OBJ_SIZE_8X8, // Sprite size
@@ -457,9 +463,9 @@ void glitchTools::showSave()
 }
 void glitchTools::showOptions()
 {
-	PA_InitText(0,1);
+	PA_InitText(TOUCH,1);
 	LoadTouchBackground(_BGOPTIONS);
-	PA_SetTextCol(0,30,10,0);
+	PA_SetTextCol(TOUCH,30,10,0);
 	PA_OutputSimpleText(TOUCH,9,5,_SAVE);
 	PA_OutputSimpleText(TOUCH,9,11,_LOAD);
 	PA_OutputSimpleText(TOUCH,9,17,_OPTIONS);
@@ -469,72 +475,7 @@ void glitchTools::showOptions()
 }
 
 
-/*
-void glitchTools::LoadNoise()
-{
-	while (1)
-	{
-		
-		PA_EasyBgLoad(1, 2, noise);
-		SlpThrd(1);
-		PA_DeleteBg(TOP,2);
-		SlpThrd(5);
-		PA_EasyBgLoad(1, 2, noise);
-		SlpThrd(2);
-		PA_DeleteBg(TOP,2);
-		SlpThrd(3);
-		PA_EasyBgLoad(1, 2, noise);
-		SlpThrd(1);
-		PA_DeleteBg(TOP,2);
-		SlpThrd(5);
-		PA_EasyBgLoad(1, 2, noise);
-		SlpThrd(1);
-		PA_DeleteBg(TOP,2);
-		SlpThrd(5);
-		PA_EasyBgLoad(1, 2, noise);
-		SlpThrd(3);
-		PA_DeleteBg(TOP,2);
-		SlpThrd(2);
-		if(Stylus.Held||Pad.Newpress.A)
-			break;
-		PA_WaitForVBL();
 
-	}
-}
-
-
-
-
-void glitchTools::LoadIntro()
-{
-	PA_InitText(0,1);
-	LoadTopBackground(_TOWN);
-	SlowIntroType(_INTRO_01);
-	//SlowIntroType(_INTRO_01);
-	SlpIntroThrd(275);
-	
-	LoadTopBackground(_CASTLE1);
-	SlowIntroType(_INTRO_02);
-	SlpIntroThrd(495);
-	
-	LoadTopBackground(_BOOKDESK);
-	SlowIntroType(_INTRO_03);
-	SlpIntroThrd(595);
-	LoadTopBackground(_ENVELOPE);
-	SlowIntroType(_INTRO_04);
-	SlpIntroThrd(595);
-	LoadTopBackground(_BOOKPG1);
-	SlowIntroType(_INTRO_05);
-	SlpIntroThrd(495);
-	LoadTopBackground(_CASTLE2);
-	SlowIntroType(_INTRO_06);
-	SlpIntroThrd(395);
-	SlowType("");
-	
-
-}
-
-*/
 int glitchTools::SlpIntroThrd(int frames)
 {
 	for (int i=0; i<=frames; i++)
@@ -551,18 +492,18 @@ int glitchTools::SlowIntroType(char text[])
 {
 	wait=0;
 	//initializes text on touch screen, bg layer 1
-	PA_InitText(0,1);
-//	PA_InitCustomText(0,1,aafontq);
-    //PA_SetTextCol(0,31,31,0);
+	PA_InitText(TOUCH,1);
+//	PA_InitCustomText(TOUCH,1,aafontq);
+    //PA_SetTextCol(TOUCH,31,31,0);
 	//prints the text one char per frame
 	for (u32 i=0; i<=strlen(text); i++)
 	{
 		if(Stylus.Held||Pad.Newpress.A)
 		{
-			PA_BoxText(0,1,2,30,22,text,i);
+			PA_BoxText(TOUCH,1,2,30,22,text,i);
 			return 1;
 		}
-		PA_BoxText(0,1,2,30,22,text,strlen(text));
+		PA_BoxText(TOUCH,1,2,30,22,text,strlen(text));
 		
 		SlpIntroThrd(wait);
 	}

@@ -23,14 +23,18 @@
 
 
 NE_Camera * Camera;     //We use pointers to waste less ram if we finish 3D mode.
-NE_Model * Model; 
+
+//Models for Chapter II
+NE_Model * Sphere; 
 NE_Material * Material; 
-NE_Material * MaterialCubo; 
-NE_Material * rb;
-NE_Model  * Cubo;
+NE_Material * Metal; 
+NE_Material * Rainbow;
+NE_Model  * Cube;
 NE_Model  * Moth_mod[NUMBER_OF_MOTHS];
 
 
+
+//Moving Object structures
 Moth moths[NUMBER_OF_MOTHS];
 
 glitchTools tool;
@@ -43,18 +47,6 @@ void RotoTranslate(float* translation, int rotX, int rotY, int rotZ, float dista
 	translation[2] = distance * ( -(PA_Cos(rotZ)^2 * PA_Sin(rotZ) / (256 * 256 * 256)) + (PA_Sin(rotY)^2 * PA_Cos(rotY) / (256 * 256 * 256) ) );
 
 	return;
-}
-void Draw3DScene(void)
-{
-	NE_CameraUse(Camera);   //Set camera
-	NE_ModelDraw(Model); //Draw model...
-	NE_PolyFormat(31,0,NE_LIGHT_ALL,NE_CULL_NONE,NE_USE_FOG );
-	NE_ModelDraw(Cubo); //Draw model...
-	for(int i=0;i<NUMBER_OF_MOTHS;i++)
-	{
-		NE_ModelDraw(Moth_mod[i]); //Draw model...
-	}
-
 }
 void MikMod9_SendCommand(u32 command)
 {
@@ -74,57 +66,53 @@ void TimerInterrupt()
 }
 
 
-int main()
+
+void Draw3DSceneChapter2(void)
 {
-	PA_Init();    // Initializes PA_Lib
-	PA_InitVBL(); // Initializes a standard VBL
-	irqEnable(IRQ_HBLANK);
+	NE_CameraUse(Camera);   //Set camera
+	NE_ModelDraw(Sphere); //Draw model...
+	NE_PolyFormat(31,0,NE_LIGHT_ALL,NE_CULL_NONE,NE_USE_FOG );
+	NE_ModelDraw(Cube); //Draw model...
+	for(int i=0;i<NUMBER_OF_MOTHS;i++)
+	{
+		NE_ModelDraw(Moth_mod[i]); //Draw model...
+	}
+
+}
+
+
+void Init3DSystem()
+{
+ irqEnable(IRQ_HBLANK);
 	irqSet(IRQ_VBLANK, NE_VBLFunc); //This is needed for special screen effects
 	irqSet(IRQ_HBLANK, NE_HBLFunc);
 	NE_Init3D();
+}
 
-	PA_InitText(1, 2);
-	//PA_OutputSimpleText(1, 1, 2, "Hello World!");
+void InitModelsChapter2()
+{
+	//Sphere
+	Sphere = NE_ModelCreate(NE_Static);  //Create space for the things we will use.
+	NE_ModelLoadStaticMesh(Sphere,(u32*)sphere);
+	Rainbow = NE_MaterialCreate();
+	NE_MaterialTexLoad(Rainbow, GL_RGB, 128, 128, TEXGEN_TEXCOORD, (u8*) test_tex);
+	NE_ModelSetMaterial(Sphere, Rainbow);
+	NE_ModelScale(Sphere, .6, .6, .6);
+
+	//Ambience/BoundingBox
+	Cube = NE_ModelCreate(NE_Static);
+	NE_ModelLoadStaticMesh(Cube,(u32*)cubo);
+	Metal = NE_MaterialCreate();
+	NE_MaterialTexLoad(Metal, GL_RGB, 128, 128, TEXGEN_TEXCOORD, (u8*) texcubo);
+	NE_ModelSetMaterial(Cube, Metal);	
+	NE_ModelScale(Cube, 5.0, 5.0, 5.0);
 
 
-	Model = NE_ModelCreate(NE_Static);  //Create space for the things we will use.
-	Camera = NE_CameraCreate();      //If you don't do this, the game will crash.
+	//Moths
+	
 	Material = NE_MaterialCreate();
-	MaterialCubo = NE_MaterialCreate();
-	rb = NE_MaterialCreate();
-	
-	//Set coordinates for the camera
-	NE_CameraSet(Camera, -1,-1,1, //Position
-		                  0,0,0, //Look at
-						  0,1,0);//Up direction
-	
-	//Load mesh from RAM and assign it to the object "Model".
-	NE_ModelLoadStaticMesh(Model,(u32*)sphere);
-	//Load a RGB texture from RAM and assign it to "Material".
 	NE_MaterialTexLoad(Material, GL_RGB, 128, 128, TEXGEN_TEXCOORD, (u8*) texture);
-	NE_MaterialTexLoad(rb, GL_RGB, 128, 128, TEXGEN_TEXCOORD, (u8*) test_tex);
-	//Assign texture to model...
-	NE_ModelSetMaterial(Model, rb);
 	
-	Cubo = NE_ModelCreate(NE_Static);
-	NE_ModelLoadStaticMesh(Cubo,(u32*)cubo);
-	NE_MaterialTexLoad(MaterialCubo, GL_RGB, 128, 128, TEXGEN_TEXCOORD, (u8*) texcubo);
-	NE_ModelSetMaterial(Cubo, MaterialCubo);
-	NE_ModelScale(Model, .6, .6, .6);
-	NE_ModelScale(Cubo, 5.0, 5.0, 5.0);
-	//We set up a light and its color
-	NE_LightSet(0,NE_DarkBlue,0,-1,0);
-	//NE_LightSet(1,NE_White,0,0,0);
-
-	
-	
-	char buffer[1024];
-	for(int i=0;i<NUMBER_OF_MOTHS;i++)
-	{
-		
-	}
-
-
 	for(int i=0;i<NUMBER_OF_MOTHS;i++)
 	{
 		Moth_mod[i] = NE_ModelCreate(NE_Static);
@@ -133,99 +121,57 @@ int main()
 		NE_ModelScale(Moth_mod[i], .1, .1, .1);
 		NE_ModelSetCoord(Moth_mod[i],moths[i].X+1,moths[i].Y+1,moths[i].Z+1);
 	}
+}
 
-	int collisions = 0;
-	
+void Init3DSceneChapter2()
+{
+	Camera = NE_CameraCreate();      //If you don't do this, the game will crash.
+	//Set coordinates for the camera
+	NE_CameraSet(Camera, -1,-1,1, //Position
+		                  0,0,0, //Look at
+						  0,1,0);//Up direction
+	//We set up a light and its color
+	NE_LightSet(0,NE_DarkBlue,0,-1,0);
+	//NE_LightSet(1,NE_White,0,0,0);
+	char buffer[1024];
+	u8 collisions = 0;
 	
 	while (1)
 	{
-		/*
-		while(1)
-		{
-			
-			//tool.InputToContinue();
-			tool.SlowType(_INTRO_00);
-			tool.InputToContinue();
-			tool.SlowType(_INTRO_01);
-			tool.InputToContinue();
-			tool.SlowType(_INTRO_02);
-			tool.InputToContinue();
-			tool.SlowType(_INTRO_03);
-			tool.InputToContinue();
-			tool.SlowType(_INTRO_04);
-			tool.InputToContinue();
-			tool.SlowType(_INTRO_05);
-			tool.InputToContinue();
-			tool.SlowType(_INTRO_06);
-			tool.InputToContinue();
-			tool.SlowType(_INTRO_07);
-			tool.InputToContinue();
-			tool.SlowType(_INTRO_08);
-			tool.InputToContinue();
-			tool.SlowType(_INTRO_09);
-			tool.InputToContinue();
-			tool.SlowType(_INTRO_10);
-			tool.InputToContinue();
-			tool.SlowType(_INTRO_11);
-			tool.InputToContinue();
-			tool.SlowType(_INTRO_12);
-			tool.InputToContinue();
-			//Chapter I
-			tool.SlowType(_CH1_00);
-			tool.InputToContinue();
-			tool.SlowType(_CH1_01);
-			tool.InputToContinue();
-			tool.SlowType(_CH1_02);
-			tool.InputToContinue();
-			tool.SlowType(_CH1_03);
-			tool.InputToContinue();
-
-		}
-		//*/
 		scanKeys();  //Get keys information
-		int keys = keysHeld();
-
-		
+		u8 keys = keysHeld();
 		int x1, y1, z1;	
 		
-		NE_ModelGetCoordI(Model, &x1, &y1, &z1);
-		PA_OutputText(1, 0, NUMBER_OF_MOTHS + 1, "Position is x: %d, y:%d, z:%d   ", x1, y1, z1);
-
+		NE_ModelGetCoordI(Sphere, &x1, &y1, &z1);
+		
 		if(keys & KEY_UP)
 		{
-			NE_ModelTranslate(Model, -0.05, 0, 0);//moves the model
-			
+			NE_ModelTranslate(Sphere, -0.05, 0, 0);//moves the model
 		}
 		if(keys & KEY_DOWN)
 		{
-			NE_ModelTranslate(Model, 0.05, 0, 0);//moves the model
+			NE_ModelTranslate(Sphere, 0.05, 0, 0);//moves the model
 		}
 		if(keys & KEY_RIGHT)
 		{	
-			NE_ModelTranslate(Model, 0, -0.05, 0);//moves the model
+			NE_ModelTranslate(Sphere, 0, -0.05, 0);//moves the model
 		}
 		if(keys & KEY_LEFT) 
 		{
-			NE_ModelTranslate(Model, 0, 0.05, 0);//moves the model
+			NE_ModelTranslate(Sphere, 0, 0.05, 0);//moves the model
 		}
 		if(keys & KEY_A)
 		{	
-			NE_ModelTranslate(Model, 0, 0, -0.05);//moves the model
+			NE_ModelTranslate(Sphere, 0, 0, -0.05);//moves the model
 		}
 		if(keys & KEY_B) 
 		{
-			NE_ModelTranslate(Model, 0, 0, 0.05);//moves the model
+			NE_ModelTranslate(Sphere, 0, 0, 0.05);//moves the model
 		}
 		if (keys)
 		{
 			NE_CameraSet(Camera, 1,2,2, f32tofloat(x1), f32tofloat(y1), f32tofloat(z1), -1,0,0);
 		}
-
-
-		//NE_CameraMoveFree(Camera, (int)translations[0], (int)translations[1], (int)translations[2]);
-
-		//NE_CameraMoveFree(Camera, (int)translations[0], (int)translations[1], (int)translations[2]);
-		
 		
 		//NE_CameraSet(Camera, 1,2,2, f32tofloat(x1), f32tofloat(y1), f32tofloat(z1), -1,0,0);
 		for(int i=0;i<NUMBER_OF_MOTHS;i++)
@@ -234,17 +180,76 @@ int main()
 			NE_ModelSetCoord(Moth_mod[i],moths[i].X,moths[i].Y,moths[i].Z);
 			sprintf(buffer, "%d: c %1.2f,%1.2f,%1.2f    ", i, moths[i].X, moths[i].Y, moths[i].Z);
 			//strcat(coords,buffer);
-			PA_OutputText(1, 0, i, buffer);
+			//PA_OutputText(1, 0, i, buffer);
 			if(moths[i].isColliding(x1,y1,z1))
 				collisions++;
-			
 		}
-		PA_OutputText(1, 0, NUMBER_OF_MOTHS + 2, "%d collisions so far.  ", collisions);
-		if (collisions>1000)
+		//PA_OutputText(1, 0, NUMBER_OF_MOTHS + 2, "%d collisions so far.  ", collisions);
+		if (collisions>200)
 		{
-			PA_OutputText(1, 0, NUMBER_OF_MOTHS + 3, "Model crashed.");
+			//PA_OutputText(1, 0, NUMBER_OF_MOTHS + 3, "Model crashed.");
 			while(1){}
 		}
+
+		NE_Process(Draw3DSceneChapter2); //Draws scene
+		//NE_WaitForVBL(NE_UPDATE_ANIMATIONS); //Wait for next frame
+		PA_WaitForVBL();
+		
+	}
+
+
+
+}
+
+
+
+int main()
+{
+	PA_Init();    // Initializes PA_Lib
+	PA_InitVBL(); // Initializes a standard VBL
+	
+
+	while (1)
+	{
+		tool.SlowType(_INTRO_00);
+		tool.InputToContinue();
+		tool.SlowType(_INTRO_01);
+		tool.InputToContinue();
+		tool.SlowType(_INTRO_02);
+		tool.InputToContinue();
+		tool.SlowType(_INTRO_03);
+		tool.InputToContinue();
+		tool.SlowType(_INTRO_04);
+		tool.InputToContinue();
+		tool.SlowType(_INTRO_05);
+		tool.InputToContinue();
+		tool.SlowType(_INTRO_06);
+		tool.InputToContinue();
+		tool.SlowType(_INTRO_07);
+		tool.InputToContinue();
+		tool.SlowType(_INTRO_08);
+		tool.InputToContinue();
+		tool.SlowType(_INTRO_09);
+		tool.InputToContinue();
+		tool.SlowType(_INTRO_10);
+		tool.InputToContinue();
+		tool.SlowType(_INTRO_11);
+		tool.InputToContinue();
+		tool.SlowType(_INTRO_12);
+		tool.InputToContinue();
+		
+		//Chapter I
+		tool.SlowType(_CH1_00);
+		tool.InputToContinue();
+		tool.SlowType(_CH1_01);
+		tool.InputToContinue();
+		tool.SlowType(_CH1_02);
+		tool.InputToContinue();
+		tool.SlowType(_CH1_03);
+		tool.InputToContinue();
+
+	}
+		
 		/*
 		PA_MoveSprite(0);
 		if (!PA_SpriteTouched(0))
@@ -268,11 +273,7 @@ int main()
 		*/
 		
 
-		NE_Process(Draw3DScene); //Draws scene
-		//NE_WaitForVBL(NE_UPDATE_ANIMATIONS); //Wait for next frame
-		PA_WaitForVBL();
-		//PA_WaitForVBL();
-	}
+
 	
 	return 0;
 }
