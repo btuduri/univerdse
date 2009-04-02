@@ -41,7 +41,7 @@
 
 //-----------CHAPTER I----------------//
 #define _CH1_00 \
-	"\n\n         Chapter I    \n\n   Death From Above"
+	"\n\n         Chapter I    \n\n     Death From Above"
 #define _CH1_01 \
 	"\n\n        Shelter 075    \n\n   Outskirts of Berlin"
 #define _CH1_02 \
@@ -56,11 +56,21 @@
 	"  Two years have passed since the first raid of the Mothmen. Cities have been abandoned and left to decay.\n  Squads of Mothmen seem to regularly patrol the ruins of every major city, so just a small number of reckless explorers dare to venture on the surface."
 
 
+//-----------CHAPTER II----------------//
+#define _CH2_00 \
+	"\n\n         Chapter II    \n\n     Reach For The Sky"
 
+//-----------CHAPTER II----------------//
+#define _CH3_00 \
+	"\n\n         Chapter III    \n\n   Ex Inferi, Ad Inferi"
+
+//-----------CHAPTER IV----------------//
+#define _CH4_00 \
+	"\n\n         Chapter IV    \n\n   Ex Inferi, Ad Inferi"
 
 //-----------CHAPTER V----------------//
 #define _CH5_00 \
-	"\n\n         Chapter I    \n\n   Ex Inferi, Ad Inferi"
+	"\n\n         Chapter V    \n\n   Ex Inferi, Ad Inferi"
 #define _CH5_01 \
 	"*Pant* *Pant*\nStop! Stop, I said!"
 #define _CH5_02 \
@@ -105,3 +115,11 @@
 	"We should... go back."
 #define _CH5_09 \
 	"Atta girl. Now just stay behind me and everything will be fine. Right?"
+#define _CH5_10 \
+	"...right..."
+
+
+
+//-----------CHAPTER VI----------------//
+#define _CH6_00 \
+	"\n\n         Chapter VI    \n\n And You Shall Live In Fear"
