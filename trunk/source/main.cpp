@@ -38,6 +38,14 @@ NE_Model  * Moth_mod[NUMBER_OF_MOTHS];
 Moth moths[NUMBER_OF_MOTHS];
 
 glitchTools tool;
+
+void Forever()
+{
+	while(1)
+	{
+		PA_WaitForVBL();
+	}
+}
 void RotoTranslate(float* translation, int rotX, int rotY, int rotZ, float distance)
 {
 	
@@ -207,10 +215,14 @@ int main()
 {
 	PA_Init();    // Initializes PA_Lib
 	PA_InitVBL(); // Initializes a standard VBL
+	PA_InitText(0,1);
 	
-
+	//Forever();
 	while (1)
 	{
+		PA_OutputText(0, 1, NUMBER_OF_MOTHS + 2, "%d collisions so far.  ", 0);
+		tool.InputToContinue();
+		Forever();
 		tool.SlowType(_INTRO_00);
 		tool.InputToContinue();
 		tool.SlowType(_INTRO_01);
@@ -247,7 +259,7 @@ int main()
 		tool.InputToContinue();
 		tool.SlowType(_CH1_03);
 		tool.InputToContinue();
-
+	PA_WaitForVBL();
 	}
 		
 		/*
