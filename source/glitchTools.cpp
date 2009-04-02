@@ -34,6 +34,12 @@ glitchTools::~glitchTools(void)
 
 int glitchTools::SaveData(int stage, int score)
 {
+	//PA_InitFat();
+	char * data;
+	sprintf(data, "%d %d", stage, score);
+	//PA_WriteTextFile("moths.sav", data);
+
+
 	return 0;
 }
 
@@ -52,11 +58,11 @@ int glitchTools::ChoiceButtons(char *choices[], int nButtons)
 	int g=nButtons+10;
 	
 	///CURSOR VERSION
-	PA_LoadSpritePal(0, // Screen
+	PA_LoadSpritePal(TOUCH, // Screen
 			0, // Palette number
 			(void*)cursor_Pal);	// Palette name
 					
-	PA_CreateSprite(0, // Screen
+	PA_CreateSprite(TOUCH, // Screen
 			0, // Sprite number
 			(void*)cursor_Sprite, // Sprite name
 			OBJ_SIZE_8X8, // Sprite size
@@ -114,15 +120,15 @@ void glitchTools::SlowType(char text[])
 {
 	wait=2;
 	//initializes text on touch screen, bg layer 1
-	//PA_InitText(0,1);
-	//PA_InitCustomText(0,1,aafontq);
 	PA_InitText(TOUCH,1);
+	//PA_InitCustomText(TOUCH,1,aafontq);
+	
     PA_SetTextCol(TOUCH,31,31,0);
 	//prints the text one char per frame
 	for (u32 i=0; i<=strlen(text); i++)
 	{
 		
-		PA_BoxText(1,1,2,30,22,text,i);
+		PA_BoxText(TOUCH,1,2,30,22,text,i);
 		
 		SlpThrd(wait);
 	}
@@ -133,11 +139,11 @@ void glitchTools::SlowQuote(char text[], char name[])
 {
 	wait=0;
 	//initializes text on touch screen, bg layer 1
-PA_InitText(TOUCH,1);
-//	PA_InitCustomText(0,1,aafontq);
-	//PA_SetTextCol(0,0,0,31);
+	PA_InitText(TOUCH,1);
+	//PA_InitCustomText(TOUCH,1,aafontq);
+	//PA_SetTextCol(TOUCH,0,0,31);
 	PA_OutputText(TOUCH,1,1,"- %s:",name);
-    //PA_SetTextCol(0,31,0,0);
+    //PA_SetTextCol(TOUCH,31,0,0);
 	//prints the text one char per frame
 	for (u32 i=0; i<=strlen(text); i++)
 	{
@@ -378,14 +384,15 @@ void glitchTools::InputToContinue()
 	u8 cnt = 0;
 	while(i!=2)
 	{
+		PA_UpdateStylus();
 		cnt++;
 		//blinking cursor	
 		if(cnt%20<10)
 			//i--;
-			PA_SetSpriteAnim(1, 1, 0);
+			PA_SetSpriteAnim(TOUCH, 1, 0);
 		else
 			//i++;
-			PA_SetSpriteAnim(1, 1, 1);
+			PA_SetSpriteAnim(TOUCH, 1, 1);
 		//PA_SetSpriteAnim(1, 1, i); // screen, sprite, frame
 		if(Stylus.Held||Pad.Newpress.A)
 			i=2;

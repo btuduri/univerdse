@@ -217,50 +217,231 @@ int main()
 	PA_InitVBL(); // Initializes a standard VBL
 	PA_InitText(0,1);
 	
-	//Forever();
+	char *scelte[4];
+	u8 score = 0;
+
+	tool.SaveData(0, score);
+	//INTRO
+	tool.status=INTRO_PRE;
 	while (1)
 	{
-		PA_OutputText(0, 1, NUMBER_OF_MOTHS + 2, "%d collisions so far.  ", 0);
-		tool.InputToContinue();
-		Forever();
-		tool.SlowType(_INTRO_00);
-		tool.InputToContinue();
-		tool.SlowType(_INTRO_01);
-		tool.InputToContinue();
-		tool.SlowType(_INTRO_02);
-		tool.InputToContinue();
-		tool.SlowType(_INTRO_03);
-		tool.InputToContinue();
-		tool.SlowType(_INTRO_04);
-		tool.InputToContinue();
-		tool.SlowType(_INTRO_05);
-		tool.InputToContinue();
-		tool.SlowType(_INTRO_06);
-		tool.InputToContinue();
-		tool.SlowType(_INTRO_07);
-		tool.InputToContinue();
-		tool.SlowType(_INTRO_08);
-		tool.InputToContinue();
-		tool.SlowType(_INTRO_09);
-		tool.InputToContinue();
-		tool.SlowType(_INTRO_10);
-		tool.InputToContinue();
-		tool.SlowType(_INTRO_11);
-		tool.InputToContinue();
-		tool.SlowType(_INTRO_12);
-		tool.InputToContinue();
-		
-		//Chapter I
-		tool.SlowType(_CH1_00);
-		tool.InputToContinue();
-		tool.SlowType(_CH1_01);
-		tool.InputToContinue();
-		tool.SlowType(_CH1_02);
-		tool.InputToContinue();
-		tool.SlowType(_CH1_03);
-		tool.InputToContinue();
-	PA_WaitForVBL();
+		switch(tool.status)
+		{
+			case(INTRO_PRE):
+			{
+				//tool.InputToContinue();
+				tool.SlowType(_INTRO_00);
+				//Forever();
+				tool.InputToContinue();
+				tool.SlowType(_INTRO_01);
+				tool.InputToContinue();
+				/*
+				tool.SlowType(_INTRO_02);
+				tool.InputToContinue();
+				tool.SlowType(_INTRO_03);
+				tool.InputToContinue();
+				tool.SlowType(_INTRO_04);
+				tool.InputToContinue();
+				tool.SlowType(_INTRO_05);
+				tool.InputToContinue();
+				tool.SlowType(_INTRO_06);
+				tool.InputToContinue();
+				tool.SlowType(_INTRO_07);
+				tool.InputToContinue();
+				tool.SlowType(_INTRO_08);
+				tool.InputToContinue();
+				tool.SlowType(_INTRO_09);
+				tool.InputToContinue();
+				tool.SlowType(_INTRO_10);
+				tool.InputToContinue();
+				tool.SlowType(_INTRO_11);
+				tool.InputToContinue();
+				//*/
+				tool.SlowType(_INTRO_12);
+				tool.InputToContinue();
+
+				tool.status = INTRO_POST;
+				break;
+
+			}
+			case INTRO_POST:
+			{
+				tool.SlowType(_OPTIONS);
+				scelte[0]=_NEWGAME;
+				scelte[1]=_LOAD;
+				if(tool.ChoiceButtons(scelte, 2)==1);
+				{
+					tool.EraseButtons(2);
+					tool.SlowType("Load Complete.");
+				}
+				//Chapter I
+				tool.status = CHAP_1_PRE;
+				break;
+			}
+			case CHAP_1_PRE:
+			{
+				tool.SlowType(_CH1_00);
+				tool.InputToContinue();
+				tool.SlowType(_CH1_01);
+				tool.InputToContinue();
+				tool.SlowType(_CH1_02);
+				tool.InputToContinue();
+				tool.SlowType(_CH1_03);
+				tool.InputToContinue();
+				tool.status = CHAP_1_POST;
+				break;
+			}
+			case CHAP_1_POST:
+			{
+				tool.status = CHAP_2_PRE;
+				break;
+			}
+			case CHAP_2_PRE:
+			{
+				tool.SlowType(_CH2_00);
+				tool.InputToContinue();
+				tool.status = CHAP_2_POST;
+				break;
+			}
+			case CHAP_2_POST:
+			{
+				tool.status = CHAP_3_PRE;
+				break;
+			}
+			case CHAP_3_PRE:
+			{
+				tool.SlowType(_CH3_00);
+				tool.InputToContinue();
+				tool.status = CHAP_3_POST;
+				break;
+			}
+			case CHAP_3_POST:
+			{
+				tool.status = CHAP_4_PRE;
+				break;
+			}
+			case CHAP_4_PRE:
+			{
+				tool.SlowType(_CH4_00);
+				tool.InputToContinue();
+				tool.status = CHAP_4_POST;
+				break;
+			}
+			case CHAP_4_POST:
+			{
+				tool.status = CHAP_5_PRE;
+				break;
+			}
+			case CHAP_5_PRE:
+			{
+				tool.SlowType(_CH5_00);
+				tool.InputToContinue();
+				tool.SlowQuote(_CH5_01,_NPC01);
+				tool.InputToContinue();
+				tool.SlowQuote(_CH5_02, _PLAYER);
+				tool.InputToContinue();
+				tool.SlowQuote(_CH5_03, _NPC01);
+				tool.InputToContinue();
+				tool.SlowQuote(_CH5_04, _PLAYER);
+				tool.InputToContinue();
+				tool.SlowQuote(_CH5_05, _NPC01);
+				tool.InputToContinue();
+				tool.SlowQuote(_CH5_06, _PLAYER);
+				tool.InputToContinue();
+				tool.SlowQuote(_CH5_07, _NPC01);
+				scelte[0] = _CH5_07_0;
+				scelte[1] = _CH5_07_1;
+				if(tool.ChoiceButtons(scelte,2) == 0)
+				{
+					tool.SlowQuote(_CH5_07_0_0, _PLAYER);
+					tool.InputToContinue();
+					tool.SlowQuote(_CH5_07_0_1, _NPC01);
+					scelte[0] = _CH5_07_0_1_0;
+					scelte[1] = _CH5_07_0_1_1;
+					if(tool.ChoiceButtons(scelte,2) == 0)
+					{
+						tool.SlowQuote(_CH5_07_0_1_0_0, _PLAYER);
+						tool.InputToContinue();
+						tool.SlowQuote(_CH5_07_0_1_0_1, _NPC01);
+						tool.InputToContinue();
+						tool.SlowQuote(_CH5_07_0_1_0_2, _PLAYER);
+						tool.InputToContinue();
+					}
+					else
+					{
+						tool.SlowQuote(_CH5_07_0_1_1_0, _PLAYER);
+						tool.InputToContinue();
+						tool.SlowQuote(_CH5_07_0_1_1_1, _NPC01);
+						tool.InputToContinue();
+					}
+					tool.SlowQuote(_CH5_07_0_2, _PLAYER);
+					tool.InputToContinue();
+				}
+				else
+				{
+					tool.SlowQuote(_CH5_07_1_0, _PLAYER);
+					tool.InputToContinue();
+					tool.SlowQuote(_SUS, _NPC01);
+					tool.InputToContinue();
+					tool.SlowQuote(_SUS, _PLAYER);
+					tool.InputToContinue();
+				}
+				tool.SlowQuote(_CH5_08, _NPC01);
+				tool.InputToContinue();
+				tool.SlowQuote(_CH5_09, _PLAYER);
+				tool.InputToContinue();
+				tool.SlowQuote(_CH5_10, _NPC01);
+				tool.InputToContinue();
+				
+
+				//3d scene for chapter V
+				tool.status = CHAP_5_POST;
+				break;
+			}
+			case CHAP_5_POST:
+			{
+				tool.status = CHAP_6_PRE;
+				break;
+			}
+			case CHAP_6_PRE:
+			{
+				tool.SlowType(_CH6_00);
+				tool.InputToContinue();
+				tool.status = CHAP_6_POST;
+				break;
+			}
+			case CHAP_6_POST:
+			{
+				tool.status = END_1;
+				break;
+			}
+			case END_1:
+			{
+				break;
+			}
+			case END_2:
+			{
+				break;
+			}
+			case END_3:
+			{
+				break;
+			}
+			case TITLE:
+			{
+				break;
+			}
+			default:
+			{
+				break;
+			}
+
+		}
+
+			
 	}
+		
+	
 		
 		/*
 		PA_MoveSprite(0);
