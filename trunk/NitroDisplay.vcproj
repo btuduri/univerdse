@@ -5,6 +5,7 @@
 	Name="univerdse"
 	ProjectGUID="{A26EB6AB-F47C-4C56-AE37-E55D158A1303}"
 	RootNamespace="NitroDisplay"
+	TargetFrameworkVersion="0"
 	>
 	<Platforms>
 		<Platform
