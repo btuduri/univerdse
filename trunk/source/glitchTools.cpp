@@ -118,7 +118,7 @@ void glitchTools::EraseButtons( int num)
 }
 void glitchTools::SlowType(char text[])
 {
-	wait=2;
+	wait=0;
 	//initializes text on touch screen, bg layer 1
 	PA_InitText(TOUCH,1);
 	//PA_InitCustomText(TOUCH,1,aafontq);
@@ -497,20 +497,20 @@ int glitchTools::SlpIntroThrd(int frames)
 
 int glitchTools::SlowIntroType(char text[])
 {
-	wait=0;
+	wait=2;
 	//initializes text on touch screen, bg layer 1
-	PA_InitText(TOUCH,1);
-//	PA_InitCustomText(TOUCH,1,aafontq);
+	//PA_InitText(TOUCH,1);
+	PA_InitCustomText(TOUCH,1,aafontq);
     //PA_SetTextCol(TOUCH,31,31,0);
 	//prints the text one char per frame
 	for (u32 i=0; i<=strlen(text); i++)
 	{
 		if(Stylus.Held||Pad.Newpress.A)
 		{
-			PA_BoxText(TOUCH,1,2,30,22,text,i);
-			return 1;
+			PA_BoxText(TOUCH,1,2,30,22,text,strlen(text));
+			
 		}
-		PA_BoxText(TOUCH,1,2,30,22,text,strlen(text));
+		PA_BoxText(TOUCH,1,2,30,22,text,i);
 		
 		SlpIntroThrd(wait);
 	}

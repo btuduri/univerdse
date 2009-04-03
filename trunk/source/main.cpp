@@ -16,6 +16,7 @@
 #include "test_pal.h"
 #include "test_tex.h"
 #include "music.h"
+#include "intro.h"
 #include "Moth.h"
 
 
@@ -74,6 +75,54 @@ void TimerInterrupt()
 }
 
 
+
+int InitSound()
+{
+	MikMod_RegisterDriver(&drv_nds_hw);
+		MikMod_RegisterAllLoaders();
+	
+	PA_OutputText(0, 1, 1, "Initializing mikmod ...\n");
+	if (MikMod_Init(""))
+	{
+		PA_OutputText(0, 1, 2, "Could not initialize mikmod, reason:\n%s\n", MikMod_strerror(MikMod_errno));
+		return 1;
+	}
+	
+
+	PA_OutputText(0, 1, 2, "Loading module ...\n");
+	MODULE* module = Player_LoadMemory(music, (u32)music_size, 64, 0);
+	if (!module)
+	{
+		PA_OutputText(0, 1, 2, "Could not load module, reason:\n%s\n", MikMod_strerror(MikMod_errno));
+		return 1;
+	}
+	
+	// Output some information
+	PA_OutputText(0, 1, 3, "Title:    %s\n", module->songname);
+	PA_OutputText(0, 1, 4, "Channels: %d\n", module->numchn);
+	
+	// call update with correct timing
+	TIMER0_CR = 0;
+	irqSet(IRQ_TIMER0, TimerInterrupt);
+	irqEnable(IRQ_TIMER0);
+	TIMER0_DATA = TIMER_FREQ_256(md_bpm * 50 / 125);
+	TIMER0_CR = TIMER_DIV_256 | TIMER_IRQ_REQ | TIMER_ENABLE;
+
+	PA_OutputText(0, 1, 6, "Starting module");
+	Player_Start(module);
+}
+
+void Player_FadeOut()
+{
+	for(int i=128;i>0;i--)
+	{
+		Player_SetVolume(i);
+		tool.SlpThrd(1);
+
+	}
+	Player_Stop();
+	Player_SetVolume(128);
+}
 
 void Draw3DSceneChapter2(void)
 {
@@ -217,6 +266,8 @@ int main()
 	PA_InitVBL(); // Initializes a standard VBL
 	PA_InitText(0,1);
 	
+	InitSound();
+
 	char *scelte[4];
 	u8 score = 0;
 
@@ -230,35 +281,35 @@ int main()
 			case(INTRO_PRE):
 			{
 				//tool.InputToContinue();
-				tool.SlowType(_INTRO_00);
+				tool.SlowIntroType(_INTRO_00);
 				//Forever();
-				tool.InputToContinue();
-				tool.SlowType(_INTRO_01);
-				tool.InputToContinue();
+				tool.SlpIntroThrd(50);
+				tool.SlowIntroType(_INTRO_01);
+				tool.SlpIntroThrd(50);
 				/*
-				tool.SlowType(_INTRO_02);
-				tool.InputToContinue();
-				tool.SlowType(_INTRO_03);
-				tool.InputToContinue();
-				tool.SlowType(_INTRO_04);
-				tool.InputToContinue();
-				tool.SlowType(_INTRO_05);
-				tool.InputToContinue();
-				tool.SlowType(_INTRO_06);
-				tool.InputToContinue();
-				tool.SlowType(_INTRO_07);
-				tool.InputToContinue();
-				tool.SlowType(_INTRO_08);
-				tool.InputToContinue();
-				tool.SlowType(_INTRO_09);
-				tool.InputToContinue();
-				tool.SlowType(_INTRO_10);
-				tool.InputToContinue();
-				tool.SlowType(_INTRO_11);
-				tool.InputToContinue();
+				tool.SlowIntroType(_INTRO_02);
+				tool.SlpIntroThrd(50);
+				tool.SlowIntroType(_INTRO_03);
+				tool.SlpIntroThrd(50);
+				tool.SlowIntroType(_INTRO_04);
+				tool.SlpIntroThrd(50);
+				tool.SlowIntroType(_INTRO_05);
+				tool.SlpIntroThrd(50);
+				tool.SlowIntroType(_INTRO_06);
+				tool.SlpIntroThrd(50);
+				tool.SlowIntroType(_INTRO_07);
+				tool.SlpIntroThrd(50);
+				tool.SlowIntroType(_INTRO_08);
+				tool.SlpIntroThrd(50);
+				tool.SlowIntroType(_INTRO_09);
+				tool.SlpIntroThrd(50);
+				tool.SlowIntroType(_INTRO_10);
+				tool.SlpIntroThrd(50);
+				tool.SlowIntroType(_INTRO_11);
+				tool.SlpIntroThrd(50);
 				//*/
-				tool.SlowType(_INTRO_12);
-				tool.InputToContinue();
+				tool.SlowIntroType(_INTRO_12);
+				tool.SlpThrd(50);
 
 				tool.status = INTRO_POST;
 				break;
@@ -266,6 +317,9 @@ int main()
 			}
 			case INTRO_POST:
 			{
+				Player_FadeOut();
+				MODULE* intro_thm = Player_LoadMemory(intro, (u32)intro_size, 64, 0);
+				Player_Start(intro_thm);
 				tool.SlowType(_OPTIONS);
 				scelte[0]=_NEWGAME;
 				scelte[1]=_LOAD;
@@ -353,6 +407,7 @@ int main()
 				scelte[1] = _CH5_07_1;
 				if(tool.ChoiceButtons(scelte,2) == 0)
 				{
+					tool.EraseButtons(2);
 					tool.SlowQuote(_CH5_07_0_0, _PLAYER);
 					tool.InputToContinue();
 					tool.SlowQuote(_CH5_07_0_1, _NPC01);
@@ -360,6 +415,7 @@ int main()
 					scelte[1] = _CH5_07_0_1_1;
 					if(tool.ChoiceButtons(scelte,2) == 0)
 					{
+						tool.EraseButtons(2);
 						tool.SlowQuote(_CH5_07_0_1_0_0, _PLAYER);
 						tool.InputToContinue();
 						tool.SlowQuote(_CH5_07_0_1_0_1, _NPC01);
@@ -369,6 +425,7 @@ int main()
 					}
 					else
 					{
+						tool.EraseButtons(2);
 						tool.SlowQuote(_CH5_07_0_1_1_0, _PLAYER);
 						tool.InputToContinue();
 						tool.SlowQuote(_CH5_07_0_1_1_1, _NPC01);
@@ -379,6 +436,7 @@ int main()
 				}
 				else
 				{
+					tool.EraseButtons(2);
 					tool.SlowQuote(_CH5_07_1_0, _PLAYER);
 					tool.InputToContinue();
 					tool.SlowQuote(_SUS, _NPC01);
