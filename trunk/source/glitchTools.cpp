@@ -182,6 +182,7 @@ void glitchTools::SlowQuote(char text[], char name[])
 	for (u32 i=0; i<=strlen(text); i++)
 	{
 		//if(Stylus.Held||Pad.Newpress.A) wait=0;
+		
 		PA_BoxText(TOUCH,1,3,30,22,text,i);
 		//AS_SoundQuickPlay(bleep);
 //		AS_MP3DirectPlay((u8*)blip, (u32)blip_size);
@@ -193,6 +194,7 @@ void glitchTools::SlowQuote(char text[], char name[])
 void glitchTools::PrintCredits(char credit[])
 {
 	fadeOut(TOUCH, 1);
+	PA_ClearTextBg(TOUCH);
 	PA_OutputText(TOUCH,1,1, credit);
 	fadeIn(TOUCH, 1);
 }

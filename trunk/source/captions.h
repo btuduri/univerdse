@@ -16,17 +16,17 @@
 #define _INTRO_01 \
 	"  Two young, married couples were traveling late at night in a car. They were passing an abandoned World War II TNT factory, when they noticed two red lights in the shadows by an old generator plant near the factory gate."
 #define _INTRO_02 \
-	"  They stopped the car, and reportedly discovered that the lights were the glowing red eyes of a large animal, shaped like a man, but bigger, maybe six and a half or seven feet tall, with big wings folded against its back"
+	"  They stopped the car, and reportedly discovered that the lights were the glowing red eyes of a large animal, shaped like a man, but bigger, maybe six and a half or seven feet tall, with big wings folded against its back."
 #define _INTRO_03 \
 	"  The following night, on November 16, several armed townspeople combed the area around the TNT plant for signs of the mysterious animal. Meanwhile, another local couple was in a car en-route to visit their friends, who lived in a bungalow amongst some storage structures erected during WW-II near the TNT plant."
 #define _INTRO_04 \
 	"  They were heading back to their car when a figure appeared behind their parked vehicle. The witnesses said that it seemed like it had been lying down, slowly rising up from the ground, large and gray, with glowing red eyes. While they phoned the police, the creature walked onto the porch and peered in at them through the window."
 #define _INTRO_05 \
-	"  Other sightings of the so-called \"Mothman\" were reported in the following years, but eventually the witnesses were put to silence, and the case was quietly dropped."
+	"  Other sightings of the so-called \"Mothman\" were reported in the following years, all misteriously leading to accidents and disasters, but eventually the witnesses were put to silence, and the case was quietly dropped."
 #define _INTRO_06 \
 	"\n\n        November 15\n           2016"
 #define _INTRO_07 \
-	"  Exactly fifty years after the first sighting of the Mothman, mankind was to face the greatest nightmare ever known.\n  As if they were celebrating a jubilee for that particular event, thousands of moth-shaped beings were spotted descending from the sky, thus giving irrefutable proof thet we were not alone in the universe."
+	"  Exactly fifty years after the first sighting of the Mothman, mankind was to face the greatest nightmare ever known.\n  As if they were celebrating a jubilee for that particular event, thousands of moth-shaped beings were spotted descending from the sky, thus giving irrefutable proof that we were not alone in the universe."
 #define _INTRO_08 \
 	"  But it was not a joyous jubilee, as the Mothmen proved since the beginning to be the deadliest foe man had ever seen.\n  As Angels of Death come from Hell, they began kidnapping humans, killing those who dared to resist.\n  No weapon seemed effective against them and, for a fallen Mothman, at least ten came from above to replace their comrade."
 #define _INTRO_09 \
@@ -50,15 +50,44 @@
 	"  Two years have passed since the first raid of the Moths. Cities have been abandoned and left to decay.\n  Squads of Moths seem to regularly patrol the ruins of every major city, so just a small number of reckless explorers dare to venture on the surface."
 #define _CH1_04 \
 	"  Meanwhile, people has learnt to live in the shadow, wisely managing the few resources left. The shelters are organized like towns, but traveling from one to another is quite hard and risky, as sometimes the Moths probe some of the underground tunnels in a hunt for survivors."
-#define _CH1_05 \
-	"  Shelter 075 is one of the oldest,"
 #define _CH1_06 \
-	"  Two years have passed since the first raid of the Mothmen. Cities have been abandoned and left to decay.\n  Squads of Mothmen seem to regularly patrol the ruins of every major city, so just a small number of reckless explorers dare to venture on the surface."
+	"  Moreover, the thrash of the society has taken advantage of this state of chaos, living day by day taking for themselves everything that's not nailed down and killing everything that moves, but falling prey of the Moths every now and then."
+#define _CH1_06 \
+	"  Shelter 075 is one of the oldest underground building which become a refuge for many survivors. Also, being the biggest and safer shelter around, is often targeted by bandits, which periodically attempt to break in."
+#define _CH1_07 \
+	"If I remember well, this is the place..."
+#define _CH1_08 \
+	"  The city hall is a huge container in the center of the shelter. Every newcomer must get here to get permission to stay in the shelter, and merchants as well need to show themselves up here befor getting on business."
+#define _CH1_09 \
+	"Anybody here?"
+#define _CH1_10 \
+	"Who's there?"
+#define _CH1_11 \
+	"Guns guy. Don't remember me?"
+#define _CH1_12 \
+	"Coming right away."
+#define _CH1_13 \
+	"  The curtains behind the desk slides aside.\n  A beautiful girl with blonde hair and dreamy blue eyes comes forward, her hands reaching for a half-torn and dirty notebook."
+#define _CH1_14 \
+	"Who are you? Last tile I came here there was a man here."
+#define _CH1_15 \
+	"Yes... my father. He was taken by the Moths three months ago."
+#define _CH1_16 \
+	"I'm... I'm sorry."
+#define _CH1_17 \
+	"So you are.. the weapon seller, right? I was told about you.\nActually, the problem is... we don't want weapons anymore here."
+#define _CH1_18 \
+	"What?"
+#define _CH1_19 \
+	"That's right. Last month a boy died playing with a gun. So we decided to get rid of all the weapons. The shelter's not been targeted by bandits for quite a long time now.. the Moths must have swept them out. So guns have become practically useless, don't you think?"
 
 
 //-----------CHAPTER II----------------//
 #define _CH2_00 \
 	"\n\n         Chapter II    \n\n     Reach For The Sky"
+#define _CH2_01 \
+	"Damn, we have to get the heck out of here!"
+
 
 //-----------CHAPTER II----------------//
 #define _CH3_00 \
@@ -80,7 +109,7 @@
 #define _CH5_04 \
 	"Of course we are! Where else in the world should we go to?"
 #define _CH5_05 \
-	"But you.. heard them. We could not have a home anymore. What if there's no place for us to go? What if the moths already have taken, or destroyed everything?"
+	"But you.. heard them. We could not have a home anymore. What if there's no place for us to go? What if the Moths already have taken, or destroyed everything?"
 #define _CH5_06 \
 	"Yes... yes, I heard them.\nWe may well be going out from a hell straight into another."
 #define _CH5_07 \
@@ -137,29 +166,29 @@
 
 //---------CREDITS-------------//
 #define _CRD_00 \
-	"\n\n\n               A\n\n\n     The Fournine Connection \n\n\n\n           Production"
+	"\n\n\n \n\n\n               A\n\n\n     The Fournine Connection \n\n\n\n           Production"
 #define _CRD_01 \
-	"\n\n\n  \n\n\n       M O T H S"
+	"\n\n\n \n\n\n  \n\n\n       M O T H S"
 #define _CRD_02 \
-	"\n\n\n    Written an directed by\n\n\n         Rey9999"
+	"\n\n\n \n\n\n    Written an directed by\n\n\n         Rey9999"
 #define _CRD_03 \
 	"\n\n\n            Coding\n\n\n         Rey9999"
 #define _CRD_04 \
-	"\n\n\n    Backgrounds\n       Textures\n     Chara Design\n\n         Rey9999"
+	"\n\n\n \n\n\n    Backgrounds\n       Textures\n     Chara Design\n\n         Rey9999"
 
 #define _CRD_05 \
-	"\n\n\n           3D Models\n\n\n         Rey9999\n\n         Zanzibar"
+	"\n\n\n \n\n\n           3D Models\n\n\n         Rey9999\n\n         Zanzibar"
 #define _CRD_06 \
-	"\n\n\n        Music & Sound Effects\n\n\n         Rey9999"
+	"\n\n\n \n\n\n        Music & Sound Effects\n\n\n         Rey9999"
 #define _CRD_07 \
-	"\n\n\n        Beta Testing\n\n\n         Zanzibar\n\n         Xorphar\n\n         Marvel"
+	"\n\n\n \n\n\n        Beta Testing\n\n\n         Zanzibar\n\n         Xorphar\n\n         Marvel"
 #define _CRD_08 \
-	"\n\n\n\n\n            Special Thanks"
+	"\n\n\n \n\n\n\n\n            Special Thanks"
 #define _CRD_09 \
-	"\n\n\n            AntonioND\n\n(Creator of NitroEngine)"
+	"\n\n\n \n\n\n            AntonioND\n\n(Creator of NitroEngine)"
 #define _CRD_10 \
-	"\n\n\n           Mollusk\n\n\n    (PAlib Developer)"
+	"\n\n\n \n\n\n           Mollusk\n\n\n    (PAlib Developer)"
 #define _CRD_11 \
-	"\n\n\n           and YOU!\n\n\n  for playing the game"
+	"\n\n\n \n\n\n           and YOU!\n\n\n  for playing the game"
 #define _CRD_12 \
-	"\n\n\n \n\n\n\n\n (c) 2009 The Fournine Connection"
+	"\n\n\n \n\n\n \n\n\n\n\n(c)2009 The Fournine Connection"

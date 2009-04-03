@@ -23,7 +23,7 @@
 //Samples
 #include "samp.h"
 
-#define NUMBER_OF_MOTHS 2
+#define NUMBER_OF_MOTHS 6
 
 
 NE_Camera * Camera;     //We use pointers to waste less ram if we finish 3D mode.
@@ -151,6 +151,11 @@ void Init3DSystem()
 	NE_Init3D();
 }
 
+void End3DSystem()
+{
+	NE_End();
+}
+
 void InitModelsChapter2()
 {
 	//Sphere
@@ -197,8 +202,9 @@ void Init3DSceneChapter2()
 	//NE_LightSet(1,NE_White,0,0,0);
 	char buffer[1024];
 	u8 collisions = 0;
-	
-	while (1)
+	bool done = false;
+	PA_InitText(1,1);
+	while (!done)
 	{
 		scanKeys();  //Get keys information
 		u8 keys = keysHeld();
@@ -242,15 +248,16 @@ void Init3DSceneChapter2()
 			NE_ModelSetCoord(Moth_mod[i],moths[i].X,moths[i].Y,moths[i].Z);
 			sprintf(buffer, "%d: c %1.2f,%1.2f,%1.2f    ", i, moths[i].X, moths[i].Y, moths[i].Z);
 			//strcat(coords,buffer);
-			//PA_OutputText(1, 0, i, buffer);
+			PA_OutputText(TOUCH, 0, i, buffer);
 			if(moths[i].isColliding(x1,y1,z1))
 				collisions++;
 		}
-		//PA_OutputText(1, 0, NUMBER_OF_MOTHS + 2, "%d collisions so far.  ", collisions);
-		if (collisions>200)
+		PA_OutputText(1, 0, NUMBER_OF_MOTHS + 2, "%d collisions so far.  ", collisions);
+		if (x1>4)
 		{
+			
 			//PA_OutputText(1, 0, NUMBER_OF_MOTHS + 3, "Model crashed.");
-			while(1){}
+			done = true;
 		}
 
 		NE_Process(Draw3DSceneChapter2); //Draws scene
@@ -259,11 +266,17 @@ void Init3DSceneChapter2()
 		
 	}
 
-
+	return;
 
 }
 
-
+void Init2DSystem()
+{
+	PA_Init();    // Initializes PA_Lib
+	PA_InitVBL(); // Initializes a standard VBL
+	PA_InitText(0,1);
+	return;
+}
 
 int main()
 {
@@ -316,7 +329,7 @@ int main()
 				tool.SlowIntroType(_INTRO_12);
 				tool.SlpThrd(50);
 
-				tool.status = INTRO_POST;
+				tool.status = CHAP_2_PRE;//INTRO_POST;
 				break;
 
 			}
@@ -359,6 +372,14 @@ int main()
 			{
 				tool.SlowType(_CH2_00);
 				tool.InputToContinue();
+				tool.SlowType(_CH2_01);
+				tool.InputToContinue();
+
+				Init3DSystem();
+				InitModelsChapter2();
+				Init3DSceneChapter2();
+				End3DSystem();
+				Init2DSystem();
 				tool.status = CHAP_2_POST;
 				break;
 			}
