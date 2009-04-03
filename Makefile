@@ -17,7 +17,7 @@ ARM7_SELECTED = ARM7_MIKMOD_DSWIFI
 # If you're using EFS_lib, uncomment "USE_EFS = YES" here.
 #---------------------------------------------------------------------------------
 
-#USE_EFS = YES
+USE_EFS = YES
 
 PATH := $(DEVKITARM)/bin:$(PATH)
 PROGNAME = PAlib
@@ -30,7 +30,7 @@ ADD_LIBS +=
 # icon for your project, too!
 #---------------------------------------------------------------------------------
 
-TEXT1 	:= Text 1
+TEXT1 	:= Moths
 TEXT2 	:= Text 2
 TEXT3 	:= Text 3
 ICON 	:= -b $(CURDIR)/../data/logo.bmp

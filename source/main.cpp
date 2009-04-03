@@ -20,6 +20,9 @@
 #include "Moth.h"
 
 
+//Samples
+#include "samp.h"
+
 #define NUMBER_OF_MOTHS 2
 
 
@@ -33,7 +36,9 @@ NE_Material * Rainbow;
 NE_Model  * Cube;
 NE_Model  * Moth_mod[NUMBER_OF_MOTHS];
 
-
+//Sound System
+SAMPLE* sample;
+MODULE* module;
 
 //Moving Object structures
 Moth moths[NUMBER_OF_MOTHS];
@@ -79,7 +84,7 @@ void TimerInterrupt()
 int InitSound()
 {
 	MikMod_RegisterDriver(&drv_nds_hw);
-		MikMod_RegisterAllLoaders();
+	//MikMod_RegisterAllLoaders();
 	
 	PA_OutputText(0, 1, 1, "Initializing mikmod ...\n");
 	if (MikMod_Init(""))
@@ -88,28 +93,28 @@ int InitSound()
 		return 1;
 	}
 	
-
-	PA_OutputText(0, 1, 2, "Loading module ...\n");
-	MODULE* module = Player_LoadMemory(music, (u32)music_size, 64, 0);
+	module = Player_LoadMemory(music, (u32)music_size, 64, 0);
 	if (!module)
 	{
 		PA_OutputText(0, 1, 2, "Could not load module, reason:\n%s\n", MikMod_strerror(MikMod_errno));
 		return 1;
 	}
+
 	
-	// Output some information
-	PA_OutputText(0, 1, 3, "Title:    %s\n", module->songname);
-	PA_OutputText(0, 1, 4, "Channels: %d\n", module->numchn);
-	
+		
 	// call update with correct timing
 	TIMER0_CR = 0;
 	irqSet(IRQ_TIMER0, TimerInterrupt);
 	irqEnable(IRQ_TIMER0);
 	TIMER0_DATA = TIMER_FREQ_256(md_bpm * 50 / 125);
 	TIMER0_CR = TIMER_DIV_256 | TIMER_IRQ_REQ | TIMER_ENABLE;
-
-	PA_OutputText(0, 1, 6, "Starting module");
 	Player_Start(module);
+}
+
+void PlaySFX(char samplename[])
+{
+	sample = Sample_Load(samplename);
+	Sample_Play(sample, 0, 0);
 }
 
 void Player_FadeOut()
@@ -266,12 +271,12 @@ int main()
 	PA_InitVBL(); // Initializes a standard VBL
 	PA_InitText(0,1);
 	
-	InitSound();
+	//InitSound();
 
 	char *scelte[4];
 	u8 score = 0;
 
-	tool.SaveData(0, score);
+	
 	//INTRO
 	tool.status=INTRO_PRE;
 	while (1)
@@ -280,10 +285,10 @@ int main()
 		{
 			case(INTRO_PRE):
 			{
-				//tool.InputToContinue();
 				tool.SlowIntroType(_INTRO_00);
 				//Forever();
 				tool.SlpIntroThrd(50);
+				PlaySFX("samp");
 				tool.SlowIntroType(_INTRO_01);
 				tool.SlpIntroThrd(50);
 				/*
@@ -319,7 +324,7 @@ int main()
 			{
 				Player_FadeOut();
 				MODULE* intro_thm = Player_LoadMemory(intro, (u32)intro_size, 64, 0);
-				Player_Start(intro_thm);
+				//Player_Start(intro_thm);
 				tool.SlowType(_OPTIONS);
 				scelte[0]=_NEWGAME;
 				scelte[1]=_LOAD;
@@ -475,18 +480,47 @@ int main()
 			}
 			case END_1:
 			{
+				tool.status = CREDITS;
 				break;
 			}
 			case END_2:
 			{
+				tool.status = CREDITS;
 				break;
 			}
 			case END_3:
 			{
+				tool.status = CREDITS;
 				break;
 			}
-			case TITLE:
+			case CREDITS:
 			{
+				tool.PrintCredits(_CRD_00);
+				tool.SlpThrd(30);
+				tool.PrintCredits(_CRD_01);
+				tool.SlpThrd(30);
+				tool.PrintCredits(_CRD_02);
+				tool.SlpThrd(30);
+				tool.PrintCredits(_CRD_03);
+				tool.SlpThrd(30);
+				tool.PrintCredits(_CRD_04);
+				tool.SlpThrd(30);
+				tool.PrintCredits(_CRD_05);
+				tool.SlpThrd(30);
+				tool.PrintCredits(_CRD_06);
+				tool.SlpThrd(30);
+				tool.PrintCredits(_CRD_07);
+				tool.SlpThrd(30);
+				tool.PrintCredits(_CRD_08);
+				tool.SlpThrd(30);
+				tool.PrintCredits(_CRD_09);
+				tool.SlpThrd(30);
+				tool.PrintCredits(_CRD_10);
+				tool.SlpThrd(30);
+				tool.PrintCredits(_CRD_11);
+				tool.SlpThrd(30);
+				tool.PrintCredits(_CRD_12);
+				Forever();
 				break;
 			}
 			default:

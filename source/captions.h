@@ -123,3 +123,43 @@
 //-----------CHAPTER VI----------------//
 #define _CH6_00 \
 	"\n\n         Chapter VI    \n\n And You Shall Live In Fear"
+
+
+//---------ENDING 1-------------//
+#define _EN1_00 \
+	"\n\n         Epilogue    \n\n "
+//---------ENDING 2-------------//
+#define _EN2_00 \
+	"\n\n         Epilogue    \n\n "
+//---------ENDING 3-------------//
+#define _EN3_00 \
+	"\n\n         Epilogue    \n\n "
+
+//---------CREDITS-------------//
+#define _CRD_00 \
+	"\n\n\n               A\n\n\n     The Fournine Connection \n\n\n\n           Production"
+#define _CRD_01 \
+	"\n\n\n  \n\n\n       M O T H S"
+#define _CRD_02 \
+	"\n\n\n    Written an directed by\n\n\n         Rey9999"
+#define _CRD_03 \
+	"\n\n\n            Coding\n\n\n         Rey9999"
+#define _CRD_04 \
+	"\n\n\n    Backgrounds\n       Textures\n     Chara Design\n\n         Rey9999"
+
+#define _CRD_05 \
+	"\n\n\n           3D Models\n\n\n         Rey9999\n\n         Zanzibar"
+#define _CRD_06 \
+	"\n\n\n        Music & Sound Effects\n\n\n         Rey9999"
+#define _CRD_07 \
+	"\n\n\n        Beta Testing\n\n\n         Zanzibar\n\n         Xorphar\n\n         Marvel"
+#define _CRD_08 \
+	"\n\n\n\n\n            Special Thanks"
+#define _CRD_09 \
+	"\n\n\n            AntonioND\n\n(Creator of NitroEngine)"
+#define _CRD_10 \
+	"\n\n\n           Mollusk\n\n\n    (PAlib Developer)"
+#define _CRD_11 \
+	"\n\n\n           and YOU!\n\n\n  for playing the game"
+#define _CRD_12 \
+	"\n\n\n \n\n\n\n\n (c) 2009 The Fournine Connection"
