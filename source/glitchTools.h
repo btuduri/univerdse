@@ -1,13 +1,14 @@
 #pragma once
 
-#include "captions.h"
-#include "efs_lib.h"
+
 //#include <fat.h>
 #define TOP 1
 #define TOUCH 0
 
 #define _PLAYER "X"
+#define _PLAYER_NOQUOTE X
 #define _NPC01 "Elke"
+#define _NPC01_NOQUOTE Elke
 
 
 #define STOP_HERE while(1)\
@@ -43,6 +44,8 @@
 #define _BLACK 2001
 #define _MAP 3000
 
+#include "captions.h"
+#include "efs_lib.h"
 
 typedef struct{
 	int map;
