@@ -35,11 +35,45 @@ glitchTools::~glitchTools(void)
 int glitchTools::SaveData(int stage, int score)
 {
 	//PA_InitFat();
+	if(EFS_Init(EFS_AND_FAT | EFS_DEFAULT_DEVICE, NULL))
+	{
+        PA_OutputText(TOUCH, 0, 0, "EFS init ok");
+		PA_OutputText(TOUCH, 0, 1, "found NDS path: %s", efs_path);   
+		InputToContinue();
+		DIR_ITER* dir;
+        struct stat st;
+        s8 nb;
+        FILE* file;
+        u8* buffer;
+        int i, size;
+		file = fopen("/data.sav", "rb");
+        if(file != NULL) 
+		{
+            // get file size using stat            
+            stat("/data.sav", &st);
+            size = st.st_size;
+            
+            buffer = (u8*)malloc(size);
+            fread(buffer, 1, size, file);
+            buffer[size-1] = '\0';
+            PA_OutputText(TOUCH, 0, 4, "/data.sav content: '%s'", buffer);
+            PA_OutputText(TOUCH, 10, 5, "size: %d bytes", size);
+            free(buffer);
+            fclose(file); 
+        }
+		else
+			PA_OutputText(TOUCH, 0, 4, "/data.sav content is null");
+		
+	} 
+	else
+	{
+       SlowType("EFS init error!");
+	}
 	char * data;
 	sprintf(data, "%d %d", stage, score);
 	//PA_WriteTextFile("moths.sav", data);
 
-
+	InputToContinue();
 	return 0;
 }
 
@@ -52,7 +86,7 @@ int glitchTools::ChoiceButtons(char *choices[], int nButtons)
 	for (int i=0;i<nButtons; i++)
 	{
 		//print the options from the last but 'nButtons', one per line
-		PA_OutputText(0,1,(23-(nButtons-i)), choices[i]);
+		PA_OutputText(TOUCH,1,(23-(nButtons-i)), choices[i]);
 	}
 	//to have nButtons<>0
 	int g=nButtons+10;
@@ -156,6 +190,12 @@ void glitchTools::SlowQuote(char text[], char name[])
 
 }
 
+void glitchTools::PrintCredits(char credit[])
+{
+	fadeOut(TOUCH, 1);
+	PA_OutputText(TOUCH,1,1, credit);
+	fadeIn(TOUCH, 1);
+}
 //sleeps for given frames
 void glitchTools::SlpThrd(int frames)
 {
@@ -497,10 +537,10 @@ int glitchTools::SlpIntroThrd(int frames)
 
 int glitchTools::SlowIntroType(char text[])
 {
-	wait=2;
+	wait=0;
 	//initializes text on touch screen, bg layer 1
-	//PA_InitText(TOUCH,1);
-	PA_InitCustomText(TOUCH,1,aafontq);
+	PA_InitText(TOUCH,1);
+	//PA_InitCustomText(TOUCH,1,aafontq);
     //PA_SetTextCol(TOUCH,31,31,0);
 	//prints the text one char per frame
 	for (u32 i=0; i<=strlen(text); i++)

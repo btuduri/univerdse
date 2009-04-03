@@ -73,7 +73,7 @@ enum STATUS
 	END_1,
 	END_2,
 	END_3,
-	TITLE
+	CREDITS
 };
 
 class glitchTools
@@ -87,6 +87,7 @@ public:
 	int SaveData(int stage, int score);
 	void SlowType(char text[]);
 	int SlowIntroType(char text[]);
+	void PrintCredits(char credit[]);
 	void SlowQuote(char text[], char name[]);
 
 	void SlpThrd(int frames);
