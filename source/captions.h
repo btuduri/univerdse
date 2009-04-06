@@ -80,6 +80,13 @@
 	"What?"
 #define _CH1_19 \
 	"That's right. Last month a boy died playing with a gun. So we decided to get rid of all the weapons. The shelter's not been targeted by bandits for quite a long time now.. the Moths must have swept them out. So guns have become practically useless, don't you think?"
+#define _CH1_19_0 \
+	"I think you're crazy"
+#define _CH1_19_1 \
+	"I think you're right"
+#define _CH1_19_0_0 \
+	"Let me tell you... this is the straightest way to get you all killed."
+
 
 
 //-----------CHAPTER II----------------//

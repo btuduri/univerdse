@@ -270,6 +270,81 @@ void Init3DSceneChapter2()
 
 }
 
+void Init3DSceneChapter3()
+{
+	Camera = NE_CameraCreate();      //If you don't do this, the game will crash.
+	//Set coordinates for the camera
+	NE_CameraSet(Camera, -1,-1,1, //Position
+		                  0,0,0, //Look at
+						  0,1,0);//Up direction
+	//We set up a light and its color
+	NE_LightSet(0,NE_DarkBlue,0,-1,0);
+	//NE_LightSet(1,NE_White,0,0,0);
+	char buffer[1024];
+	u8 collisions = 0;
+	bool done = false;
+	PA_InitText(1,1);
+	while (!done)
+	{
+		scanKeys();  //Get keys information
+		u8 keys = keysHeld();
+		int x1, y1, z1;	
+		
+		NE_ModelGetCoordI(Sphere, &x1, &y1, &z1);
+		
+		if(keys & KEY_UP)
+		{
+			NE_ModelTranslate(Sphere, -0.05, 0, 0);//moves the model
+		}
+		if(keys & KEY_DOWN)
+		{
+			NE_ModelTranslate(Sphere, 0.05, 0, 0);//moves the model
+		}
+		if(keys & KEY_RIGHT)
+		{	
+			NE_ModelTranslate(Sphere, 0, -0.05, 0);//moves the model
+		}
+		if(keys & KEY_LEFT) 
+		{
+			NE_ModelTranslate(Sphere, 0, 0.05, 0);//moves the model
+		}
+		
+		if (keys)
+		{
+			NE_CameraSet(Camera, 1,2,2, f32tofloat(x1), f32tofloat(y1), f32tofloat(z1), -1,0,0);
+		}
+		
+		//NE_CameraSet(Camera, 1,2,2, f32tofloat(x1), f32tofloat(y1), f32tofloat(z1), -1,0,0);
+		for(int i=0;i<NUMBER_OF_MOTHS;i++)
+		{
+			moths[i].move();
+			NE_ModelSetCoord(Moth_mod[i],moths[i].X,moths[i].Y,moths[i].Z);
+			sprintf(buffer, "%d: c %1.2f,%1.2f,%1.2f    ", i, moths[i].X, moths[i].Y, moths[i].Z);
+			//strcat(coords,buffer);
+			PA_OutputText(TOUCH, 0, i, buffer);
+			if(moths[i].isColliding(x1,y1,z1))
+				collisions++;
+		}
+		PA_OutputText(1, 0, NUMBER_OF_MOTHS + 2, "%d collisions so far.  ", collisions);
+		if (x1>4)
+		{
+			
+			//PA_OutputText(1, 0, NUMBER_OF_MOTHS + 3, "Model crashed.");
+			done = true;
+		}
+
+		NE_Process(Draw3DSceneChapter2); //Draws scene
+		//NE_WaitForVBL(NE_UPDATE_ANIMATIONS); //Wait for next frame
+		PA_WaitForVBL();
+		
+	}
+
+	return;
+
+}
+
+
+
 void Init2DSystem()
 {
 	PA_Init();    // Initializes PA_Lib
