@@ -212,27 +212,27 @@ void Init3DSceneChapter2()
 		
 		NE_ModelGetCoordI(Sphere, &x1, &y1, &z1);
 		
-		if(keys & KEY_UP)
+		if(keys & KEY_UP && x1>-4)
 		{
 			NE_ModelTranslate(Sphere, -0.05, 0, 0);//moves the model
 		}
-		if(keys & KEY_DOWN)
+		if(keys & KEY_DOWN && x1<4)
 		{
 			NE_ModelTranslate(Sphere, 0.05, 0, 0);//moves the model
 		}
-		if(keys & KEY_RIGHT)
+		if(keys & KEY_RIGHT && y1>-4)
 		{	
 			NE_ModelTranslate(Sphere, 0, -0.05, 0);//moves the model
 		}
-		if(keys & KEY_LEFT) 
+		if(keys & KEY_LEFT && y1<4) 
 		{
 			NE_ModelTranslate(Sphere, 0, 0.05, 0);//moves the model
 		}
-		if(keys & KEY_A)
+		if(keys & KEY_A && z1>-4)
 		{	
 			NE_ModelTranslate(Sphere, 0, 0, -0.05);//moves the model
 		}
-		if(keys & KEY_B) 
+		if(keys & KEY_B && z1<4) 
 		{
 			NE_ModelTranslate(Sphere, 0, 0, 0.05);//moves the model
 		}
@@ -253,13 +253,20 @@ void Init3DSceneChapter2()
 				collisions++;
 		}
 		PA_OutputText(1, 0, NUMBER_OF_MOTHS + 2, "%d collisions so far.  ", collisions);
-		if (x1>4)
+		if (collisions> 22)
 		{
 			
-			//PA_OutputText(1, 0, NUMBER_OF_MOTHS + 3, "Model crashed.");
-			done = true;
+			PA_OutputText(1, 0, NUMBER_OF_MOTHS + 3, "Model has crashed");
+			while(1)
+			{}
 		}
-
+		if (x1 == 3 && y1 == 3 && z1 == 3)
+			
+		{
+			done = true;
+			PA_OutputText(1, 0, NUMBER_OF_MOTHS + 4, "Waypoint reached!");
+			tool.SlpThrd(29);
+		}
 		NE_Process(Draw3DSceneChapter2); //Draws scene
 		//NE_WaitForVBL(NE_UPDATE_ANIMATIONS); //Wait for next frame
 		PA_WaitForVBL();
