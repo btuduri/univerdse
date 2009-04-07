@@ -12,6 +12,7 @@
 #include "texture.h"
 #include "cubo.h"
 #include "sphere.h"
+#include "human.h"
 #include "texcubo.h"
 #include "test_pal.h"
 #include "test_tex.h"
@@ -41,6 +42,9 @@ NE_Model  * Cube;
 NE_Palette * Ambi;
 NE_Model  * Moth_mod[NUMBER_OF_MOTHS];
 
+
+//models for chapter III
+NE_Model * Human;
 //Sound System
 
 MODULE* module;
@@ -148,6 +152,15 @@ void Draw3DSceneChapter2(void)
 
 }
 
+void Draw3DSceneChapter3(void)
+{
+	NE_CameraUse(Camera);   //Set camera
+	NE_ModelDraw(Human); //Draw model...
+	NE_PolyFormat(31,0,NE_LIGHT_ALL,NE_CULL_NONE,NE_USE_FOG );
+	NE_ModelDraw(Cube); //Draw model...
+	
+
+}
 
 void Init3DSystem()
 {
@@ -179,10 +192,10 @@ void InitModelsChapter2()
 	NE_ModelLoadStaticMesh(Cube,(u32*)sphere);
 	Metal = NE_MaterialCreate();
 	NE_MaterialTexLoad(Metal, GL_RGB, 128, 128, TEXGEN_TEXCOORD, (u8*) ambi_tex);
-	NE_PaletteLoad(Ambi,(u16*)ambi_tex,32,GL_RGB32_A3);
+	NE_PaletteLoad(Ambi,(u16*)ambi_tex,256,GL_RGB32_A3);
 	NE_MaterialTexSetPal(Metal,Ambi);
 	NE_ModelSetMaterial(Cube, Metal);	
-	NE_ModelScale(Cube, 15.0, 15.0, 15.0);
+	NE_ModelScale(Cube, 18.0, 18.0, 18.0);
 
 
 	//Moths
@@ -198,6 +211,37 @@ void InitModelsChapter2()
 		NE_ModelScale(Moth_mod[i], .1, .1, .1);
 		NE_ModelSetCoord(Moth_mod[i],moths[i].X+1,moths[i].Y+1,moths[i].Z+1);
 	}
+}
+
+void InitModelsChapter3()
+{
+	//Sphere
+	Human = NE_ModelCreate(NE_Static);  //Create space for the things we will use.
+	NE_ModelLoadStaticMesh(Sphere,(u32*)cubo);
+	Rainbow = NE_MaterialCreate();
+	NE_MaterialTexLoad(Rainbow, GL_RGB, 128, 128, TEXGEN_TEXCOORD, (u8*) test_tex);
+
+	NE_ModelSetMaterial(Sphere, Rainbow);
+	NE_ModelScale(Sphere, .6, .6, .6);
+
+	//Ambience/BoundingBox
+	Cube = NE_ModelCreate(NE_Static);
+	Ambi = NE_PaletteCreate();
+	NE_ModelLoadStaticMesh(Cube,(u32*)human);
+	Metal = NE_MaterialCreate();
+	NE_MaterialTexLoad(Metal, GL_RGB, 128, 128, TEXGEN_TEXCOORD, (u8*) ambi_tex);
+	NE_PaletteLoad(Ambi,(u16*)ambi_tex,256,GL_RGB32_A3);
+	NE_MaterialTexSetPal(Metal,Ambi);
+	NE_ModelSetMaterial(Cube, Metal);	
+	NE_ModelScale(Cube, 18.0, 18.0, 18.0);
+
+
+	//Moths
+	
+	Material = NE_MaterialCreate();
+	NE_MaterialTexLoad(Material, GL_RGB, 128, 128, TEXGEN_TEXCOORD, (u8*) texture);
+	
+	
 }
 
 void Init3DSceneChapter2()
@@ -300,10 +344,12 @@ void Init3DSceneChapter2()
 
 void Init3DSceneChapter3()
 {
-	Camera = NE_CameraCreate();      //If you don't do this, the game will crash.
+
+	Camera = NE_CameraCreate();
+	NE_ModelSetCoord(Human, 0,-5000,0);
 	//Set coordinates for the camera
-	NE_CameraSet(Camera, -1,-1,1, //Position
-		                  0,0,0, //Look at
+	NE_CameraSet(Camera, -1,-4500,1, //Position
+		                  0,-5000,0, //Look at
 						  0,1,0);//Up direction
 	//We set up a light and its color
 	NE_LightSet(0,NE_DarkBlue,0,-1,0);
@@ -312,13 +358,14 @@ void Init3DSceneChapter3()
 	u8 collisions = 0;
 	bool done = false;
 	PA_InitText(1,1);
+	int x1, y1, z1;	
 	while (!done)
 	{
 		scanKeys();  //Get keys information
 		u8 keys = keysHeld();
-		int x1, y1, z1;	
 		
-		NE_ModelGetCoordI(Sphere, &x1, &y1, &z1);
+		
+		NE_ModelGetCoordI(Human, &x1, &y1, &z1);
 		
 		if(keys & KEY_UP)
 		{
@@ -330,38 +377,22 @@ void Init3DSceneChapter3()
 		}
 		if(keys & KEY_RIGHT)
 		{	
-			NE_ModelTranslate(Sphere, 0, -0.05, 0);//moves the model
+			NE_ModelTranslate(Sphere, 0, 0, -0.05);//moves the model
 		}
 		if(keys & KEY_LEFT) 
 		{
-			NE_ModelTranslate(Sphere, 0, 0.05, 0);//moves the model
+			NE_ModelTranslate(Sphere, 0, 0, 0.05);//moves the model
 		}
 		
 		if (keys)
 		{
-			//NE_CameraSet(Camera, 1,2,2, f32tofloat(x1), f32tofloat(y1), f32tofloat(z1), -1,0,0);
+			NE_CameraSet(Camera, -1,-4500,1, f32tofloat(x1), f32tofloat(y1), f32tofloat(z1), -1,0,0);
 		}
 		
 		//NE_CameraSet(Camera, 1,2,2, f32tofloat(x1), f32tofloat(y1), f32tofloat(z1), -1,0,0);
-		for(int i=0;i<NUMBER_OF_MOTHS;i++)
-		{
-			moths[i].move();
-			NE_ModelSetCoord(Moth_mod[i],moths[i].X,moths[i].Y,moths[i].Z);
-			sprintf(buffer, "%d: c %1.2f,%1.2f,%1.2f    ", i, moths[i].X, moths[i].Y, moths[i].Z);
-			//strcat(coords,buffer);
-			PA_OutputText(1, 0, i, buffer);
-			if(moths[i].isColliding(x1,y1,z1))
-				collisions++;
-		}
-		PA_OutputText(1, 0, NUMBER_OF_MOTHS + 2, "%d collisions so far.  ", collisions);
-		if (x1>4)
-		{
-			
-			//PA_OutputText(1, 0, NUMBER_OF_MOTHS + 3, "Model crashed.");
-			done = true;
-		}
+		
 
-		NE_Process(Draw3DSceneChapter2); //Draws scene
+		NE_Process(Draw3DSceneChapter3); //Draws scene
 		//NE_WaitForVBL(NE_UPDATE_ANIMATIONS); //Wait for next frame
 		PA_WaitForVBL();
 		
@@ -394,7 +425,7 @@ int main()
 
 	
 	//INTRO
-	tool.status=CHAP_2_PRE;//INTRO_PRE;
+	tool.status=CHAP_3_PRE;//INTRO_PRE;
 	tool.SaveData(0,0);
 	while (1)
 	{
@@ -498,6 +529,11 @@ int main()
 			{
 				tool.SlowType(_CH3_00);
 				tool.InputToContinue();
+				Init3DSystem();
+				InitModelsChapter3();
+				Init3DSceneChapter3();
+				End3DSystem();
+				Init2DSystem();
 				tool.status = CHAP_3_POST;
 				break;
 			}
