@@ -50,7 +50,7 @@
 	"  Two years have passed since the first raid of the Moths. Cities have been abandoned and left to decay.\n  Squads of Moths seem to regularly patrol the ruins of every major city, so just a small number of reckless explorers dare to venture on the surface."
 #define _CH1_04 \
 	"  Meanwhile, people has learnt to live in the shadow, wisely managing the few resources left. The shelters are organized like towns, but traveling from one to another is quite hard and risky, as sometimes the Moths probe some of the underground tunnels in a hunt for survivors."
-#define _CH1_06 \
+#define _CH1_05 \
 	"  Moreover, the thrash of the society has taken advantage of this state of chaos, living day by day taking for themselves everything that's not nailed down and killing everything that moves, but falling prey of the Moths every now and then."
 #define _CH1_06 \
 	"  Shelter 075 is one of the oldest underground building which become a refuge for many survivors. Also, being the biggest and safer shelter around, is often targeted by bandits, which periodically attempt to break in."
@@ -94,7 +94,18 @@
 	"\n\n         Chapter II    \n\n     Reach For The Sky"
 #define _CH2_01 \
 	"Damn, we have to get the heck out of here!"
-
+#define _CH2_02 \
+	"Where?"
+#define _CH2_01 \
+	"I don't know, but anywhere else!"
+#define _CH2_01 \
+	"  Suddenly the Moths start buzzing, and unexpectedly take off, leaving the crumbling house. After a minute or two the creepy noise of their wings is not even barely audible."
+#define _CH2_01 \
+	"I don't know, but anywhere else!"
+#define _CH2_01 \
+	"I don't know, but anywhere else!"
+#define _CH2_01 \
+	"I don't know, but anywhere else!"
 
 //-----------CHAPTER II----------------//
 #define _CH3_00 \

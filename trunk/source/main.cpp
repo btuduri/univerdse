@@ -15,13 +15,17 @@
 #include "texcubo.h"
 #include "test_pal.h"
 #include "test_tex.h"
-#include "music.h"
-#include "intro.h"
+#include "ambi_pal.h"
+#include "ambi_tex.h"
+
 #include "Moth.h"
 
 
-//Samples
+//Samples & audio
 #include "samp.h"
+#include "music.h"
+#include "intro.h"
+
 
 #define NUMBER_OF_MOTHS 6
 
@@ -34,6 +38,7 @@ NE_Material * Material;
 NE_Material * Metal; 
 NE_Material * Rainbow;
 NE_Model  * Cube;
+NE_Palette * Ambi;
 NE_Model  * Moth_mod[NUMBER_OF_MOTHS];
 
 //Sound System
@@ -109,6 +114,7 @@ int InitSound()
 	TIMER0_DATA = TIMER_FREQ_256(md_bpm * 50 / 125);
 	TIMER0_CR = TIMER_DIV_256 | TIMER_IRQ_REQ | TIMER_ENABLE;
 	Player_Start(module);
+	return 0;
 }
 
 void PlaySFX(char samplename[])
@@ -163,14 +169,18 @@ void InitModelsChapter2()
 	NE_ModelLoadStaticMesh(Sphere,(u32*)sphere);
 	Rainbow = NE_MaterialCreate();
 	NE_MaterialTexLoad(Rainbow, GL_RGB, 128, 128, TEXGEN_TEXCOORD, (u8*) test_tex);
+
 	NE_ModelSetMaterial(Sphere, Rainbow);
 	NE_ModelScale(Sphere, .6, .6, .6);
 
 	//Ambience/BoundingBox
 	Cube = NE_ModelCreate(NE_Static);
+	Ambi = NE_PaletteCreate();
 	NE_ModelLoadStaticMesh(Cube,(u32*)cubo);
 	Metal = NE_MaterialCreate();
-	NE_MaterialTexLoad(Metal, GL_RGB, 128, 128, TEXGEN_TEXCOORD, (u8*) texcubo);
+	NE_MaterialTexLoad(Metal, GL_RGB, 128, 128, TEXGEN_TEXCOORD, (u8*) ambi_tex);
+	NE_PaletteLoad(Ambi,(u16*)ambi_tex,32,GL_RGB32_A3);
+	NE_MaterialTexSetPal(Metal,Ambi);
 	NE_ModelSetMaterial(Cube, Metal);	
 	NE_ModelScale(Cube, 5.0, 5.0, 5.0);
 
@@ -192,10 +202,11 @@ void InitModelsChapter2()
 
 void Init3DSceneChapter2()
 {
+	int camerax = 0;
 	Camera = NE_CameraCreate();      //If you don't do this, the game will crash.
 	//Set coordinates for the camera
-	NE_CameraSet(Camera, -1,-1,1, //Position
-		                  0,0,0, //Look at
+	NE_CameraSet(Camera, -5,-2,4, //Position
+		                  camerax,0,3, //Look at
 						  0,1,0);//Up direction
 	//We set up a light and its color
 	NE_LightSet(0,NE_DarkBlue,0,-1,0);
@@ -212,32 +223,42 @@ void Init3DSceneChapter2()
 		
 		NE_ModelGetCoordI(Sphere, &x1, &y1, &z1);
 		
-		if(keys & KEY_UP && x1>-4)
+		if(keys & KEY_UP && x1>-40000)
 		{
 			NE_ModelTranslate(Sphere, -0.05, 0, 0);//moves the model
 		}
-		if(keys & KEY_DOWN && x1<4)
+		if(keys & KEY_DOWN && x1<40000)
 		{
 			NE_ModelTranslate(Sphere, 0.05, 0, 0);//moves the model
 		}
-		if(keys & KEY_RIGHT && y1>-4)
+		if(keys & KEY_RIGHT && y1>-40000)
 		{	
 			NE_ModelTranslate(Sphere, 0, -0.05, 0);//moves the model
 		}
-		if(keys & KEY_LEFT && y1<4) 
+		if(keys & KEY_LEFT && y1<40000) 
 		{
 			NE_ModelTranslate(Sphere, 0, 0.05, 0);//moves the model
 		}
-		if(keys & KEY_A && z1>-4)
+		if(keys & KEY_A && z1>-40000)
 		{	
 			NE_ModelTranslate(Sphere, 0, 0, -0.05);//moves the model
 		}
-		if(keys & KEY_B && z1<4) 
+		if(keys & KEY_B && z1<40000) 
 		{
 			NE_ModelTranslate(Sphere, 0, 0, 0.05);//moves the model
 		}
+		if(keys & KEY_R) 
+		{
+			camerax++;
+		}
+		if(keys & KEY_L) 
+		{
+			camerax--;
+			
+		}
 		if (keys)
 		{
+			//NE_CameraSet(Camera, -5,-2,4, camerax,0,0,  0,1,0);
 			NE_CameraSet(Camera, 1,2,2, f32tofloat(x1), f32tofloat(y1), f32tofloat(z1), -1,0,0);
 		}
 		
@@ -318,7 +339,7 @@ void Init3DSceneChapter3()
 		
 		if (keys)
 		{
-			NE_CameraSet(Camera, 1,2,2, f32tofloat(x1), f32tofloat(y1), f32tofloat(z1), -1,0,0);
+			//NE_CameraSet(Camera, 1,2,2, f32tofloat(x1), f32tofloat(y1), f32tofloat(z1), -1,0,0);
 		}
 		
 		//NE_CameraSet(Camera, 1,2,2, f32tofloat(x1), f32tofloat(y1), f32tofloat(z1), -1,0,0);
@@ -328,7 +349,7 @@ void Init3DSceneChapter3()
 			NE_ModelSetCoord(Moth_mod[i],moths[i].X,moths[i].Y,moths[i].Z);
 			sprintf(buffer, "%d: c %1.2f,%1.2f,%1.2f    ", i, moths[i].X, moths[i].Y, moths[i].Z);
 			//strcat(coords,buffer);
-			PA_OutputText(TOUCH, 0, i, buffer);
+			PA_OutputText(1, 0, i, buffer);
 			if(moths[i].isColliding(x1,y1,z1))
 				collisions++;
 		}
@@ -373,7 +394,7 @@ int main()
 
 	
 	//INTRO
-	tool.status=INTRO_PRE;
+	tool.status=CHAP_2_PRE;//INTRO_PRE;
 	while (1)
 	{
 		switch(tool.status)
@@ -411,7 +432,7 @@ int main()
 				tool.SlowIntroType(_INTRO_12);
 				tool.SlpThrd(50);
 
-				tool.status = CHAP_2_PRE;//INTRO_POST;
+				tool.status = INTRO_POST;
 				break;
 
 			}
