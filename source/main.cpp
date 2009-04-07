@@ -42,7 +42,7 @@ NE_Palette * Ambi;
 NE_Model  * Moth_mod[NUMBER_OF_MOTHS];
 
 //Sound System
-SAMPLE* sample;
+
 MODULE* module;
 
 //Moving Object structures
@@ -89,8 +89,8 @@ void TimerInterrupt()
 int InitSound()
 {
 	MikMod_RegisterDriver(&drv_nds_hw);
-	//MikMod_RegisterAllLoaders();
-	
+	MikMod_RegisterAllLoaders();
+	//md_mode |= DMODE_SOFT_SNDFX;
 	PA_OutputText(0, 1, 1, "Initializing mikmod ...\n");
 	if (MikMod_Init(""))
 	{
@@ -113,13 +113,13 @@ int InitSound()
 	irqEnable(IRQ_TIMER0);
 	TIMER0_DATA = TIMER_FREQ_256(md_bpm * 50 / 125);
 	TIMER0_CR = TIMER_DIV_256 | TIMER_IRQ_REQ | TIMER_ENABLE;
-	Player_Start(module);
+	//Player_Start(module);
 	return 0;
 }
 
 void PlaySFX(char samplename[])
 {
-	sample = Sample_Load(samplename);
+	SAMPLE * sample = Sample_Load(samplename);
 	Sample_Play(sample, 0, 0);
 }
 
@@ -176,13 +176,13 @@ void InitModelsChapter2()
 	//Ambience/BoundingBox
 	Cube = NE_ModelCreate(NE_Static);
 	Ambi = NE_PaletteCreate();
-	NE_ModelLoadStaticMesh(Cube,(u32*)cubo);
+	NE_ModelLoadStaticMesh(Cube,(u32*)sphere);
 	Metal = NE_MaterialCreate();
 	NE_MaterialTexLoad(Metal, GL_RGB, 128, 128, TEXGEN_TEXCOORD, (u8*) ambi_tex);
 	NE_PaletteLoad(Ambi,(u16*)ambi_tex,32,GL_RGB32_A3);
 	NE_MaterialTexSetPal(Metal,Ambi);
 	NE_ModelSetMaterial(Cube, Metal);	
-	NE_ModelScale(Cube, 5.0, 5.0, 5.0);
+	NE_ModelScale(Cube, 15.0, 15.0, 15.0);
 
 
 	//Moths
@@ -209,7 +209,7 @@ void Init3DSceneChapter2()
 		                  camerax,0,3, //Look at
 						  0,1,0);//Up direction
 	//We set up a light and its color
-	NE_LightSet(0,NE_DarkBlue,0,-1,0);
+	NE_LightSet(0,NE_White,0,-1,0);
 	//NE_LightSet(1,NE_White,0,0,0);
 	char buffer[1024];
 	u8 collisions = 0;
@@ -387,7 +387,7 @@ int main()
 	PA_InitVBL(); // Initializes a standard VBL
 	PA_InitText(0,1);
 	
-	//InitSound();
+	InitSound();
 
 	char *scelte[4];
 	u8 score = 0;
@@ -395,6 +395,7 @@ int main()
 	
 	//INTRO
 	tool.status=CHAP_2_PRE;//INTRO_PRE;
+	tool.SaveData(0,0);
 	while (1)
 	{
 		switch(tool.status)
@@ -403,10 +404,12 @@ int main()
 			{
 				tool.SlowIntroType(_INTRO_00);
 				//Forever();
-				tool.SlpIntroThrd(50);
 				PlaySFX("samp");
+				tool.SlpIntroThrd(50);
+				//
 				tool.SlowIntroType(_INTRO_01);
 				tool.SlpIntroThrd(50);
+				
 				/*
 				tool.SlowIntroType(_INTRO_02);
 				tool.SlpIntroThrd(50);
