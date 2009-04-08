@@ -101,13 +101,13 @@
 #define _CH2_01 \
 	"  Suddenly the Moths start buzzing, and unexpectedly take off, leaving the crumbling house. After a minute or two the creepy noise of their wings is not even barely audible."
 #define _CH2_01 \
-	"I don't know, but anywhere else!"
+	"Do you think... do you think it's safe now?"
 #define _CH2_01 \
-	"I don't know, but anywhere else!"
+	"Hush! It can be a trap!"
 #define _CH2_01 \
-	"I don't know, but anywhere else!"
+	"  There is definitely no sound which may give away the presence of foes."
 
-//-----------CHAPTER II----------------//
+//-----------CHAPTER III----------------//
 #define _CH3_00 \
 	"\n\n         Chapter III    \n\n   Ex Inferi, Ad Inferi"
 
