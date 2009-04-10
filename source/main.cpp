@@ -638,7 +638,24 @@ int main()
 			}
 			case CHAP_6_POST:
 			{
-				tool.status = END_1;
+
+				if (score<4)
+				{
+					tool.status = END_1;
+				}
+				else
+				{
+					if (score<10)
+					{
+						tool.status = END_2;
+					}
+					else
+					{
+						tool.status = END_3;
+					}
+				}
+
+				
 				break;
 			}
 			case END_1:
