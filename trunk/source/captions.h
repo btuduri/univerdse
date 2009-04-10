@@ -96,16 +96,34 @@
 	"Damn, we have to get the heck out of here!"
 #define _CH2_02 \
 	"Where?"
-#define _CH2_01 \
+#define _CH2_03 \
 	"I don't know, but anywhere else!"
-#define _CH2_01 \
+#define _CH2_04 \
 	"  Suddenly the Moths start buzzing, and unexpectedly take off, leaving the crumbling house. After a minute or two the creepy noise of their wings is not even barely audible."
-#define _CH2_01 \
+#define _CH2_05 \
 	"Do you think... do you think it's safe now?"
-#define _CH2_01 \
+#define _CH2_06 \
 	"Hush! It can be a trap!"
-#define _CH2_01 \
-	"  There is definitely no sound which may give away the presence of foes."
+#define _CH2_07 \
+	"  There is definitely no sound which may give away the presence of foes. This could be the last chance to get to a safer place."
+#define _CH2_08 \
+	"W-What are we gonna do now?"
+#define _CH2_08_0 \
+	"Shut up!"
+#define _CH2_08_1 \
+	"Scram!"
+#define _CH2_08_0_1 \
+	"We stay here, and wait. If you want to go out there and get killed, be my guest."
+#define _CH2_08_0_2 \
+	"  Elke bursts into tears. This situation is obviously scaring the living hell out of her, to the point that her hands are shaking so fast she cannot control them."
+#define _CH2_08_0_3 \
+	"Damn, there is no need to get hysterical now..."
+#define _CH2_08_0_4 \
+	"  Elke does not seem to get quieter any moment."
+#define _CH2_08_0_3 \
+	"Crap! Hey, you need to calm down now! What if those things are still out there?"
+#define _CH2_08_0_4 \
+	"  Elke does not seem to get quieter any moment."
 
 //-----------CHAPTER III----------------//
 #define _CH3_00 \

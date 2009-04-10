@@ -1,6 +1,6 @@
 #pragma once
 typedef struct{
-	u8 life
+	int life;
 	char message[];
 } slot;
 
