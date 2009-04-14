@@ -188,7 +188,20 @@
 //-----------CHAPTER VI----------------//
 #define _CH6_00 \
 	"\n\n         Chapter VI    \n\n And You Shall Live In Fear"
-
+#define _CH6_01 \
+	"  The capsule violently shakes as it hits the land, while a cloud of dust rises and whirls around the impact site, making impossible to see anything from the viewfinders."
+#define _CH6_02 \
+	"Damn! Are you all right?"
+#define _CH6_02 \
+	"Y-Yes! At least, I think"
+#define _CH6_02 \
+	"  The screaming noise of the metal of the capsule scratching against the ground ceases abruptly, and so do the vibrations and the shaking.\n  It seems the capsule has finally stopped."
+#define _CH6_02 \
+	"  However, the cloud of red dust raised by the impact has not yet subsided, and it's impossible to see outside the windows."
+#define _CH6_02 \
+	"Y-Yes! At least, I think"
+#define _CH6_02 \
+	"Y-Yes! At least, I think"
 
 //---------ENDING 1-------------//
 #define _EN1_00 \
