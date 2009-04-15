@@ -199,11 +199,19 @@
 #define _CH6_02 \
 	"  However, the cloud of red dust raised by the impact has not yet subsided, and it's impossible to see outside the windows."
 #define _CH6_02 \
-	"Y-Yes! At least, I think"
+	"Are we.. are we home?"
 #define _CH6_02 \
-	"Y-Yes! At least, I think"
+	"Can't really say yet."
+#define _CH6_02 \
+	"I-Is it safe to go out?"
+#define _CH6_02 \
+	"I told you, can't say yet."
 
 //---------ENDING 1-------------//
+#define _EN1_00 \
+	"\n\n         Epilogue    \n\n "
+#define _EN1_00 \
+	"  The cloud of dust enclosing the capsule has finally subsided.\n  The door slides with a hissing noise, revealing a most"
 #define _EN1_00 \
 	"\n\n         Epilogue    \n\n "
 //---------ENDING 2-------------//
